@@ -1,0 +1,21 @@
+@import './asset/fonts/font.scss';
+@import './shared/styles/premade-tailwind.scss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #F49634;
+  --secondary-color: #F4D37F;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: 'Inter';
+}

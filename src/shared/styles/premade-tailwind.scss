@@ -1,0 +1,98 @@
+.inlined-component-centered {
+    @apply flex justify-center items-center;
+}
+
+.inlined-component {
+    @apply flex items-center;
+}
+
+.inlined-between {
+    @apply flex justify-between items-center;
+}
+
+.inlined-wrapped {
+    @apply flex flex-wrap items-center;
+}
+
+.framer-regular {
+    @apply w-[600px] p-[80px];
+}
+
+.framer-small {
+    @apply w-[400px] pt-[32px] pr-[40px] pb-[32px] pl-[40px];
+}
+
+.dfa-header {
+    @apply bg-[#141415];
+    height: unset;
+    padding: 14px 80px;
+    max-height: none;
+}
+
+.dfa-footer {
+    @apply bg-[#141415] h-[72px];
+    padding: 20px 80px;
+    max-height: none;
+}
+
+.dfa-text-gradient {
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
+}
+
+.dfa-btn-gradient {
+    @apply h-10 bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
+    background-color: unset !important;
+}
+
+.dfa-btn-gradient-0 {
+    @apply bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
+    background-color: unset !important;
+}
+
+.dfa-gradient-progress {
+    .mantine-Progress-bar {
+        background: linear-gradient(89.98deg, #F49634 0.03%, #F4D37F 100%);
+    }
+}
+
+.dfa-avatar {
+    @apply w-10 h-10;
+}
+
+.test {
+    border-top: 1px solid red;
+}
+
+.dfa-dropdown {
+    @apply bg-[#141415] border border-[#667085] rounded-lg p-0 w-[180px] #{!important};
+
+    .mantine-Menu-item  {
+        @apply rounded-none text-center;
+        padding: 15px 0px;
+    }
+    .mantine-Menu-item:nth-last-child(-n +1) {
+        // @apply border border-t-[#667085] #{!important};
+        @apply text-red-500;
+        border-top: 1px solid #667085;
+    }
+}
+
+.dfa-border-color {
+    @apply border-[#667085];
+}
+
+// Mantine-UI Error Cloned
+.global-input-error {
+    font-family: inherit;
+    -webkit-tap-highlight-color: transparent;
+    color: inherit;
+    font-size: inherit;
+    line-height: 1.55;
+    -webkit-text-decoration: none;
+    text-decoration: none;
+    word-break: break-word;
+    color: #e03131;
+    font-size: 12px;
+    line-height: 1.2;
+    display: block;
+}

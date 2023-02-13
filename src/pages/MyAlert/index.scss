@@ -1,0 +1,43 @@
+.mantine-Tabs-tab {
+    @apply font-semibold text-dfa-grey;
+
+    padding: 0 2px 0px 2px;
+    border: none;
+
+    .dfa-tab {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 14px;
+
+        .dfa-line-1 {
+            height: 2px;
+            width: 100%;
+            background: transparent;
+        }
+    }
+}
+
+.mantine-Tabs-tab[data-active] {
+    @apply font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
+    .dfa-tab {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 14px;
+    
+        .dfa-line-1 {
+            height: 2px;
+            width: 100%;
+            @apply bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
+        }
+    }
+}
+
+.mantine-Tabs-root {
+    @apply flex flex-col justify-center items-center;
+}
+
+.mantine-Tabs-tabsList {
+    @apply gap-9 border-b-0 pb-8;
+}

@@ -1,0 +1,26 @@
+[
+    {
+        "path": "/",
+        "name": "Home",
+        "title": "Home",
+        "childrern": []
+    },
+    {
+        "path": "/login",
+        "name": "Login",
+        "title": "Login",
+        "childrern": []
+    },
+    {
+        "path": "/register",
+        "name": "Register",
+        "title": "Register",
+        "childrern": []
+    },
+    {
+        "path": "/about",
+        "name": "About Page",
+        "title": "About Page",
+        "childrern": []
+    }
+]

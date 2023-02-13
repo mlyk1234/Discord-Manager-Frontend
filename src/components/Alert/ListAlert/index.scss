@@ -1,0 +1,9 @@
+.mantine-Switch-body {
+
+    input:checked+.mantine-Switch-track {
+        @apply border-0 bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
+    }
+    // .mantine-Switch-track {
+    //     background-color: red;
+    // }
+}
