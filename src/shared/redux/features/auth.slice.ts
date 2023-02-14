@@ -3,13 +3,13 @@ import axios from 'axios';
 interface IAuthState {
     access_token: string;
     expiresIn: number | null;
-    milliseconds?: number | null;
+    milliseconds: number;
 }
 
 const initialState: IAuthState = {
     access_token: '',
     expiresIn: null,
-    milliseconds: null
+    milliseconds: 0
 }
 export const authSlice = createSlice({
     initialState,
@@ -20,9 +20,7 @@ export const authSlice = createSlice({
             // state = {...action.payload};
             return {...action.payload}
         },
-        clearToken: () => {
-            return initialState;
-        }
+        clearToken: () => initialState,
     },
 });
 

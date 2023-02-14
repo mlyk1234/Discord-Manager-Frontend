@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../shared/redux";
 import { clearToken } from "../../shared/redux/features/auth.slice";
 import { updateSessionStatus } from "../../shared/redux/features/session.slice";
+import { logout } from "../../shared/redux/features/user.slice";
 
 interface IMenuItems {
     name: string,
@@ -28,11 +29,10 @@ export const DropDown = ({items}: {items?: string[]}) => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const logOut = () => {
-
+        localStorage.clear();
+        dispatch(logout());
         dispatch(updateSessionStatus('inactive'));
         dispatch(clearToken());
-        
-        navigate('/')
     }
 
     return (

@@ -10,16 +10,7 @@ import { useAppSelector } from "../../../shared/redux";
 // mantine-Tabs-tab
 
 
-const datalist: IListAlert[] = [{
-    id: 1,
-    channel: 'Slack',
-    watch: 'BTC',
-    condition: 'lte',
-    price_target: (23000).toFixed(2),
-    currency: 'USD',
-    enabled: false,
-    createdDate: new Date()
-}];
+const datalist: IListAlert[] = [];
 
 const conditionMapper = (type: string) => {
     if(type === 'gte') return 'above';
@@ -29,15 +20,14 @@ const conditionMapper = (type: string) => {
 export const ActiveAlert = () => {
     const [data, setData] = useState<IListAlert[]>(datalist);
     const priceAlerts = useAppSelector((state) => state.priceAlertSlice);
-
     useEffect(() => {
         if(priceAlerts && priceAlerts.length > 0) {
             const res: IListAlert[] = [];
-            const filtered = priceAlerts.filter((item) => item.status === 'S');
+            const filtered = priceAlerts.filter((item) => item.status === 'P');
             filtered.forEach((item, index) => {
                 const split = item.watch.split('-');
                 res.push({
-                    id: index,
+                    id: item.id,
                     watch: split[0],
                     condition: conditionMapper(item.condition),
                     price_target: item.price_target,
@@ -47,6 +37,8 @@ export const ActiveAlert = () => {
                 })
             })
             setData(res);
+        } else {
+            setData([])
         }
     }, [priceAlerts]);
     

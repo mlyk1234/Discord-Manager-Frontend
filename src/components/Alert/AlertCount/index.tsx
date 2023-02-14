@@ -2,7 +2,7 @@ import { Button, Progress, Text } from "@mantine/core"
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../shared/redux";
-import { useGetAlertQuery, useLazyGetAlertQuery } from "../../../shared/redux/api/price-alert.api";
+import { useLazyGetAlertQuery } from "../../../shared/redux/api/price-alert.api";
 import { initUserPriceAlert } from "../../../shared/redux/features/price-alert.slice";
 
 type layout = 'variant_1' | 'variant_2';
@@ -11,7 +11,7 @@ export const AlertCount = ({type = 'variant_1'}: {type?: layout}) => {
 
     const [trigger] = useLazyGetAlertQuery();
     const dispatch = useAppDispatch();
-    // console.log('count comp', data)
+    const priceAlerts = useAppSelector((state) => state.priceAlertSlice);
     const [alertCountNum, setAlertCountNum] = useState(0);
     const [alertCount, setAlertCount] = useState(0);
     const limit = 3;
@@ -26,8 +26,15 @@ export const AlertCount = ({type = 'variant_1'}: {type?: layout}) => {
                 setAlertCount(Number(inPercent.toFixed(2)));
             }
         }
-        fn()
+        fn();
     }, [trigger])
+
+    useEffect(() => {
+        if(!(priceAlerts && priceAlerts.length > 0)) {
+            setAlertCountNum(0);
+            setAlertCount(0);
+        }
+    }, [priceAlerts])
 
     return (
         <div className="flex flex-col items-center text-center gap-[18px]">

@@ -12,7 +12,7 @@ export default function Layout({ header, body, footer }: { header?: JSX.Element,
                 footer: footer
             }})
         )
-        console.log('Active Layout: [Generic]')
+        // console.log('Active Layout: [Generic]')
     }, [header, body, footer])
 
     return layout;

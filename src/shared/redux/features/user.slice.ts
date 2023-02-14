@@ -2,11 +2,15 @@ import { IUser } from './../types';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IUserState {
-  user: IUser | null;
+  user: IUser;
 }
 
 const initialState: IUserState = {
-  user: null,
+  user: {
+    emailAddress: '',
+    role: '',
+    rememberMe: false
+  },
 };
 
 export const userSlice = createSlice({
@@ -15,7 +19,6 @@ export const userSlice = createSlice({
   reducers: {
     logout: () => initialState,
     setUser: (state, action: PayloadAction<IUser>) => {
-        console.log('gettion', action)
       state.user = action.payload;
     },
   },

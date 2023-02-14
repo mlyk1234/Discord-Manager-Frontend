@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useInitNotification, useInitUserPriceAlerts } from './global/on-logged-hooks';
-import { useOnPageLoad, useOnPageLoad2 } from './global/useOnPageLoad';
+import { useInitNotification, useInitUserDetails, useInitUserPriceAlerts } from './global/on-logged-hooks';
+import { useOnPageLoad } from './global/useOnPageLoad';
 import { useOnPageRefresh, useRefreshToken } from './session-helper/refresh-token-helper';
 import { useLogoutTimer } from './session-helper/inactivity-helper';
 import { useAppSelector } from '../redux';
@@ -14,13 +14,13 @@ const CreateHooks = ({injector}: {injector: Function[]}) => {
     injector.forEach((fn) => {
         map.push(fn());
     });
-    console.log('Initialized Hooks', map)
+    // console.log('Initialized Hooks', map)
 }
 
 export const useGeneralHooks = () => {
     CreateHooks({
         injector: [
-            // useRefreshToken,
+            useRefreshToken,
             useOnPageLoad,
             useOnPageRefresh,
             useLogoutTimer
@@ -28,23 +28,10 @@ export const useGeneralHooks = () => {
     });
 }
 
-export const useAuthenticatedHooks = () => {
-    const session = useAppSelector((state) => state.sessionSlice.session_status);
-
-    useEffect(() => {
-        if(session && session === 'active') {
-            CreateHooks({
-                injector: [
-                    useInitNotification
-                ]
-            })
-        }
-    }, [session]);
-}
-
 export const useRequireAuthHooks = () => {
 
     // useInitNotification();
+    useInitUserDetails();
     useInitUserPriceAlerts();
     useInitNotification();
 }

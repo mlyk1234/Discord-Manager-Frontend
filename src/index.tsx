@@ -23,7 +23,7 @@ root.render(
     <Provider store={store}>
       {/* <PersistGate persistor={persistor}> */}
         <MantineProvider theme={{ colorScheme: 'dark', fontFamily: 'inherit' }}>
-          <AppShell padding={0}>
+          <AppShell className='dfa-app-shell' padding={0}>
             <App/>
           </AppShell>
         </MantineProvider>

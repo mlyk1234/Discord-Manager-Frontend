@@ -1,10 +1,10 @@
 import { Badge, Button, Chip, Container, Input, Text } from "@mantine/core"
-import { useEffect, useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { IntegrationIcon, IntegrationIconV2, integration_name } from "../../../asset/integrations";
 import { useAppDispatch, useAppSelector } from "../../../shared/redux";
 import { ReactComponent as VerifiedCheckIcon } from "../../../asset/common/verified-check.icon.svg";
 import { saveUserNotificationSettings } from "./notification.api";
-import { useLazyGetNotificationSetupQuery } from "../../../shared/redux/api/notification-setup.api.";
+import { useGetNotificationSetupMutation } from "../../../shared/redux/api/notification-setup.api.";
 
 export const NotificationSetup = () => {
 
@@ -59,6 +59,9 @@ const IntegrationList = () => {
     const [discordWebhookUrl, setDiscordWebhookUrl] = useState<string>('');
     const [emailStatus, setEmailStatus] = useState<boolean>(false);
 
+    const [slackUrl, setSlackUrl] = useState<string>('');
+    const [telegramUrl, setTelegramUrl] = useState<string>('');
+
     const onSelectMode = (item: integration_name) => {
         setCurrentSetup(item);
         integrations.forEach((v) => {
@@ -71,11 +74,11 @@ const IntegrationList = () => {
     }
 
     const connectionLink = (item: integration_name) => {
-        if(item === 'Slack') return notificationState.slackDetails.authLink;
-        else if (item === 'Telegram') return notificationState.telegramDetails.botlink;
+        if(item === 'Slack') return slackUrl;
+        else if (item === 'Telegram') return telegramUrl;
         else return '';
     }
-    const [trigger] = useLazyGetNotificationSetupQuery();
+    const [trigger] = useGetNotificationSetupMutation();
     useEffect(() => {
         integrations.forEach((v) => {
             if(Object.values(notificationState).find((item) => item.name === v.name).connected) v.connected = true;
@@ -83,13 +86,35 @@ const IntegrationList = () => {
         });
         setIntegrations([...integrations]);
 
-        setSlackStatus(notificationState.slackDetails.notificationsEnabled);
-        setDiscordStatus(notificationState.discordDetails.notificationsEnabled);
-        setTelegramStatus(notificationState.telegramDetails.notificationsEnabled);
-        setDiscordWebhookUrl(notificationState.discordDetails.webhookURL);
-        setEmailStatus(notificationState.emailDetails.notificationsEnabled);
-
     }, [notificationState, currentSetup]);
+    
+    useEffect(() => {
+            setSlackStatus(notificationState.slackDetails.notificationsEnabled);
+            setDiscordStatus(notificationState.discordDetails.notificationsEnabled);
+            setTelegramStatus(notificationState.telegramDetails.notificationsEnabled);
+            setDiscordWebhookUrl(notificationState.discordDetails.webhookURL);
+            setEmailStatus(notificationState.emailDetails.notificationsEnabled);
+
+            setSlackUrl(notificationState.slackDetails.authLink);
+            setTelegramUrl(notificationState.telegramDetails.botlink);
+            setDiscordWebhookUrl(notificationState.discordDetails.webhookURL)
+        
+    }, [notificationState.discordDetails.notificationsEnabled, notificationState.discordDetails.webhookURL, notificationState.emailDetails.notificationsEnabled, notificationState.slackDetails.authLink, notificationState.slackDetails.notificationsEnabled, notificationState.telegramDetails.botlink, notificationState.telegramDetails.notificationsEnabled]);
+
+    useEffect(() => {
+        if(currentSetup === 'Slack') {
+            console.log('CIACIACIA')
+            console.log(slackUrl)
+            console.log(notificationState.slackDetails.authLink)
+            setLinkToConnect(slackUrl)
+        } else if(currentSetup === 'Telegram') {
+            console.log('CIACIACIA')
+            console.log(telegramUrl)
+            setLinkToConnect(telegramUrl)
+        } else {
+            return;
+        }
+    }, [currentSetup, notificationState.slackDetails.authLink, slackUrl, telegramUrl])
 
     const onSave = async (item: integration_name) => {
         try {
@@ -136,6 +161,10 @@ const IntegrationList = () => {
         }
     }
 
+    const onSetDiscordWebhookUrl = (str: string) => {
+        setDiscordWebhookUrl(str);
+    }
+
     return (
         <Container p={0} className='w-full flex flex-col'>
             <Container p={0} className='w-full flex flex-row justify-center items-center gap-[50px]'>
@@ -153,7 +182,7 @@ const IntegrationList = () => {
             <Container p={0} className="w-[400px]">
                 <Text className="text-dfa-grey mt-8">{integrations.find(item => item.name === currentSetup)?.desc}</Text>
                 {integrations.find(item => item.name === currentSetup)?.webhook_url && 
-                    <Input className="mt-8" radius={'xl'} placeholder="Enter webhook url"/>
+                    <Input onChange={(v: BaseSyntheticEvent) => onSetDiscordWebhookUrl(v.target.value)} className="mt-8" radius={'xl'} placeholder="Enter webhook url"/>
                 }
                 {!integrations.find(item => item.name === currentSetup)?.connected ?
                     <>
@@ -176,7 +205,11 @@ const IntegrationList = () => {
                     </>
                      :
                     <>
-                        <Button radius={'xl'} className="dfa-btn-gradient mt-8">Disconnect</Button>
+                        <Button
+                            onClick={() => 
+                                window.open(linkToConnet)
+                            }
+                            radius={'xl'} className="dfa-btn-gradient mt-8">Reconnect</Button>
                         <div className="inlined-component-centered gap-4 mt-[132px]">
                             <Text className="text-dfa-grey">Status:</Text>
                             <Badge className="dfa-badge-configured">

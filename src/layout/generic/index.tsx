@@ -1,7 +1,3 @@
-import { AppShell, Header } from '@mantine/core';
-import { useEffect } from 'react';
-import styles from './index.module.scss';
-
 interface IViewBaseProps {
     children: {
         header?: JSX.Element,
