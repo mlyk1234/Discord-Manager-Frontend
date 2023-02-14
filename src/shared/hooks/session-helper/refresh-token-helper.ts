@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux";
+import { injectableJWT } from "../../redux/api/axios-handler";
 import { setJWTAuth } from "../../redux/features/auth.slice";
 import { updateSessionStatus } from "../../redux/features/session.slice";
 
@@ -15,19 +16,21 @@ let initialTime = new Date();
 
 export const useRefreshToken = () => {
     let dispatch = useAppDispatch();
-    const access_token = useAppSelector((state) => state.authSlice.access_token);
-    console.log('injected!', access_token);
+    const access_token = localStorage.getItem('token');
+    const milliseconds = useAppSelector((state) => state.authSlice.milliseconds);
+    // console.log('[useRefreshToken]: You have left', milliseconds)
+    // console.log('[Refresh]', access_token);
 
     async function refreshToken() {
         if (access_token !== null) {
             try {
                 let response = await getToken(access_token);
                 let token = response.data.data.access_token;
+                await injectableJWT(token);
                 localStorage.setItem("access_token", token);
             } catch (err) {
                 dispatch(updateSessionStatus('inactive'))
             }
-            //console.log("access token stored", token);
         }
     }
 
@@ -35,6 +38,7 @@ export const useRefreshToken = () => {
         clearInterval(time);
         
         let checkSessionTimeout = () => {
+            const threshold = milliseconds;
             var minutes = Math.abs((initialTime.valueOf() - (new Date()).valueOf()) / 1000 / 60);
             if (minutes > 10) {
                 initialTime = new Date();
@@ -51,22 +55,28 @@ export const useRefreshToken = () => {
     }
 }
 
+// if user no interact within half of timestamp, then begin check about logout
+// if got then refresh token about
+
 export const useOnPageRefresh = () => {
     // Refresh page should get new token => Active State
     let dispatch = useAppDispatch();
-    const access_token = useAppSelector((state) => state.authSlice.access_token);
+    const access_token = localStorage.getItem('token');
     async function onPageRefresh() {
-        if (access_token !== null) {
+        if (access_token) {
             try {
                 let response = await getToken(access_token);
                 if (response.status !== 401) {
                     const { access_token, expiresIn  } = response.data.data;
+                    const milliseconds = expiresIn - new Date().getTime();
                     dispatch(setJWTAuth({
                         access_token,
-                        expiresIn
+                        expiresIn,
+                        milliseconds: milliseconds
                     }))
                     initialTime = new Date();
                 }
+                dispatch(updateSessionStatus('active'));
             } catch (e) {
                 console.log('[Error useOnPageRefresh]:', e);
                 dispatch(updateSessionStatus('inactive'));
@@ -82,3 +92,4 @@ export const useOnPageRefresh = () => {
         name: 'pageRefresh'
     }
 }
+

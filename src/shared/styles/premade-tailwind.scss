@@ -135,3 +135,33 @@
     }
 }
 
+.dfa-app-shell {
+
+    .mantine-AppShell-main {
+        padding: 0;
+    }
+}
+
+body {
+    overflow: hidden;
+
+    * {
+        scrollbar-width: none;
+        scrollbar-color: #f0bf67 rgba(0,0,0,0);
+      }
+    
+      /* Chrome, Edge, and Safari */
+      *::-webkit-scrollbar {
+        width: 0.01vw;
+      }
+    
+      *::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0);
+      }
+    
+      *::-webkit-scrollbar-thumb {
+        background-color: #f0bf67;
+        border-radius: 10px;
+        border: 1px solid transparent;
+      }
+}

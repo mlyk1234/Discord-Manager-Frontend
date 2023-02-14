@@ -7,7 +7,7 @@ import { useCreateAlertMutation } from "../../../shared/redux/api/price-alert.ap
 import { DFAModal, IModalHeader } from "../../Modal"
 import { DFAGrid } from "../../shared/DFAGrid";
 import { AlertCount, AlertCountWidget } from "../AlertCount"
-import { ReactComponent as LightningIcon } from "../../../asset/DFA/lightning.icon.svg";
+import { CurrentPriceWidget } from "../../shared/CurrentPriceWidget/CurrentPriceWidget";
 
 interface ISelectAlert {
     image?: string,
@@ -148,11 +148,7 @@ export const AlertForm = () => {
                 />
                 <Text>on chain.</Text>
             </div>
-            <div className="inlined-wrapped text-dfa-grey text-base font-medium">
-                <LightningIcon className="mr-2"/>
-                <Text>The price of <span className="dfa-text-gradient">BTC</span> is currently</Text>&nbsp;
-                <Text className="dfa-text-gradient">22,782.92 USD</Text>.
-            </div>
+            <CurrentPriceWidget/>
             <div className="inlined-wrapped text-base text-white gap-2">
                 <Checkbox/>
                 <Text>Disable this alert after it triggers once.</Text>

@@ -6,32 +6,6 @@ import DeFiAlert from './components/AppLayout';
 import Viewbase from './components/Viewbase';
 
 function App() {
-  // useEffect(() => {
-  //   let source: EventSource;
-  //   function connect() {
-    
-  //     if(access_token) {
-  //       const eventSourceURL = "http://localhost:3002";
-  //       source = new EventSource(`${eventSourceURL}/sse?id=${access_token}`);
-      
-  //       source.addEventListener('priceData', (e: any) => {
-  //         console.log('e', e)
-  //       })
-  //       source.addEventListener('error', (e: any) => {
-  //         console.log('SSE', e)
-  //         source.close();
-  //         connect();
-  //       });
-  //     }
-  //   }
-  //   connect();
-    
-  //   return () => {
-  //     if (source) {
-  //       source.close();
-  //     }
-  //   }
-  // }, [access_token]);
   useGeneralHooks();
   useRequireAuthHooks();
   

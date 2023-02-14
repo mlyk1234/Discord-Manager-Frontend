@@ -40,7 +40,7 @@ const AlertTabs = () => {
                 <Tabs.List>
                     {tabs && tabs.length > 0 ?
                         tabs.map(item => 
-                            <Tabs.Tab value={item.label}>
+                            <Tabs.Tab key={item.label} value={item.label}>
                                 <div className="dfa-tab">
                                     {item.label}
                                     <div className="dfa-line-1"></div>
@@ -51,7 +51,7 @@ const AlertTabs = () => {
                     }
                 </Tabs.List>
                 {tabs && tabs.length > 0 ?
-                        tabs.map(item => <Tabs.Panel className="w-[100vw]" value={item.label}>{item.component}</Tabs.Panel>)
+                        tabs.map(item => <Tabs.Panel key={item.label} className="w-[100vw]" value={item.label}>{item.component}</Tabs.Panel>)
                         :
                         null
                 }

@@ -6,36 +6,7 @@ import { InitialState } from "../Initial";
 import { ListAlert } from "../ListAlert/ListAlert";
 
 
-const datalist: IListAlert[] = [{
-    id: 1,
-    channel: 'Discord',
-    watch: 'ETH',
-    condition: 'lte',
-    price_target: (23000).toFixed(2),
-    currency: 'USD',
-    enabled: false,
-    createdDate: new Date()
-},
-{
-    id: 2,
-    channel: 'Slack',
-    watch: 'BTC',
-    condition: 'lte',
-    price_target: (23000).toFixed(2),
-    currency: 'USD',
-    enabled: false,
-    createdDate: new Date()
-},
-{
-    id: 3,
-    channel: 'Slack',
-    watch: 'BTC',
-    condition: 'lte',
-    price_target: (23000).toFixed(2),
-    currency: 'USD',
-    enabled: false,
-    createdDate: new Date()
-}];
+const datalist: IListAlert[] = [];
 
 const conditionMapper = (type: string) => {
     if(type === 'gte') return 'above';

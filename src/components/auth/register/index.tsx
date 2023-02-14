@@ -1,17 +1,15 @@
-import { Button, Center, Checkbox, Container, Grid, Image, Input, NavLink, PasswordInput, Text, TextInput } from "@mantine/core";
-import { ReactNode, useEffect, useState } from "react";
-import { useForm, UseFormReturnType } from '@mantine/form';
+import { Button,  Checkbox, Container, Grid, PasswordInput, Text, TextInput } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { useForm } from '@mantine/form';
 import { useNavigate } from "react-router-dom"
-import { useAppDispatch } from "../../../shared/redux";
-import { useLoginUserMutation } from "../../../shared/redux/api/auth.api";
-import { updateSessionStatus } from "../../../shared/redux/features/session.slice";
+
 
 import { PASSWORD_PATTERN } from "../../../shared/definition/regex";
 import { Frame } from "../../shared/Framer";
 import { Bounded } from "../../shared/BoundedInput";
 import { useRegisterUserMutation } from "../../../shared/redux/api/user.api";
-import { AxiosError, AxiosResponse } from "axios";
-import { Merge } from "react-hook-form";
+import { AxiosResponse } from "axios";
+
 
 export const Register = () => {
     const navigate = useNavigate();
@@ -27,20 +25,15 @@ export const Register = () => {
         initialValues: formData,
         validate: {
             emailAddress: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-            // password: (value) => (PASSWORD_PATTERN.test(value) ? null : 'Password is not ideal'),
-            password: (value) => (value === '' || value === null ? 'Please enter password.' : null),
+            password: (value) => (PASSWORD_PATTERN.test(value) ? null : 'Password is not ideal'),
             confirm_password: (value, primary_value) => (value !== primary_value.password ? 'Password not matched!' : null),
         }
     })
     const handleSubmit = async () => {
-
         if(!checkbox) { form.values.checked = false; return; }
-
-        console.log('f', form.errors)
         const payload = {
             ...form.values
         }
-        console.log(form.values);
         const {checked, ...rest} = form.values;
         registerUser({...rest});
     };
@@ -53,7 +46,6 @@ export const Register = () => {
         if(isError && error) {
             const err = error as AxiosResponse;
             setErrorText(err.data.message)
-            console.log('errrr', err.data.message);
         }
     }, [error, isError]);
 
@@ -78,7 +70,7 @@ export const Register = () => {
                 <Text className="inlined-component-centered text-white gap-1 pt-8">
                     Already have an account?
                     <Text onClick={() => navigate('/')} className="cursor-pointer font-medium text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)]">Log in now</Text></Text>
-                    {isError && <Text className="global-input-error text-center mt-2">{errorText}</Text>}
+                    {errorText && <Text className="global-input-error text-center mt-2">{errorText}</Text>}
                 {/* <ExternalAuth/> */}
             </Container>
         </Frame>

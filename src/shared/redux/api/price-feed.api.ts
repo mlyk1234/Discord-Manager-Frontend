@@ -5,24 +5,23 @@ const BASE_URL = 'http://localhost:3002';
 export const priceFeedApi = createApi({
     reducerPath: 'priceFeedApi',
     baseQuery: axiosBaseQuery({
-        baseUrl: `${BASE_URL}/api/v1/price-feed/`,
+        controller_url: `/api/v1/price-feed/`,
     }),
     tagTypes: ['PriceFeed'],
     endpoints(build) {
         return {
             getAllNetwork: build.query<any[], void>({
                 query: () => ({
-                    url: 'network-chain',
+                    endpointurl: 'network-chain',
                     method: 'get'
                 }),
                 transformResponse: (result: { data: any[] }) => {
-                    console.log('priceFeedTransform', result);
+                    // console.log('priceFeedTransform', result);
                     return result.data;
                 },
                 async onQueryStarted(args, { dispatch, queryFulfilled}) {
                     try {
                         const { data } = await queryFulfilled;
-                        console.log('priceFeedApi', data)
                     } catch (error) {
                         console.log('Error [priceFeedApi]');
                     }

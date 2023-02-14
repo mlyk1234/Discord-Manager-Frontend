@@ -7,25 +7,23 @@ const BASE_URL = 'http://localhost:3002';
 export const notificationSetupApi = createApi({
     reducerPath: 'notificationSetupApi',
     baseQuery: axiosBaseQuery({
-        baseUrl: `${BASE_URL}/api/v1/notification/`,
+        controller_url: `/api/v1/notification/`,
     }),
     endpoints(build) {
         return {
-            getNotificationSetup: build.query<INotificationSetup, void>({
+            getNotificationSetup: build.mutation<INotificationSetup, void>({
                 query: () => ({
-                    url: 'get-social-media-details',
+                    endpointurl: 'get-social-media-details',
                     method: 'get'
                 }),
                 transformResponse: (result: { data: INotificationSetup }) => {
-                    console.log('[transformResponse] - [getNotificationSetup]', result.data);
+                    // console.log('[transformResponse] - [getNotificationSetup]', result.data);
                     return result.data;
                 },
                 async onQueryStarted(args, { dispatch, queryFulfilled }) {
                     try {
                         const { data } = await queryFulfilled;
                         dispatch(initUserNotificationSetup(data));
-                        console.log('[getNotificationSetup]', data);
-                        // dispatch
                     } catch (error) {
                         console.log('error [getNotificationSetup]')
                     }
@@ -35,4 +33,4 @@ export const notificationSetupApi = createApi({
     },
 });
 
-export const { useGetNotificationSetupQuery, useLazyGetNotificationSetupQuery } = notificationSetupApi;
+export const { useGetNotificationSetupMutation } = notificationSetupApi;

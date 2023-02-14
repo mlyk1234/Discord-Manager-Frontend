@@ -1,7 +1,6 @@
 import { axiosBaseQuery, injectableJWT } from './axios-handler';
 import { IUser } from './../types';
 import { createApi } from '@reduxjs/toolkit/query/react';
-import axios from 'axios';
 
 import { userApi } from './user.api';
 import { setJWTAuth } from '../features/auth.slice';
@@ -12,7 +11,7 @@ const BASE_URL = 'http://localhost:3002';
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: axiosBaseQuery({
-    baseUrl: `${BASE_URL}/api/v1/auth/`,
+    controller_url: `/api/v1/auth/`,
   }),
   endpoints(build) {
     return {
@@ -32,28 +31,26 @@ export const authApi = createApi({
         }
       >({
         query: (data) => ({
-          url: 'user-login',
+          endpointurl: 'user-login',
           method: 'post',
           data: data,
         }),
         async onQueryStarted(args, { dispatch, queryFulfilled }) {
           try {
             const { data } = await queryFulfilled;
-            injectableJWT(data.data.access_token); // Accessible
-
+            await injectableJWT(data.data.access_token); // Accessible
+            localStorage.setItem('token', data.data.access_token);
             const milliseconds = data.data.expiresIn - new Date().getTime();
+            console.log('get milis', data.data.expiresIn);
             dispatch(setJWTAuth({
                 access_token: data.data.access_token,
                 expiresIn: data.data.expiresIn,
                 milliseconds
             }));
             
-            dispatch(updateSessionStatus('active'))
-            //   axios.defaults.headers.Authorization = `Bearer ${data.data.access_token}`;
-            await dispatch(userApi.endpoints.getMe.initiate(null))
+            dispatch(updateSessionStatus('active'));
+            dispatch(userApi.endpoints.getDetails.initiate(null))
             
-            // if(data.data.user.rememberMe) {
-            // }
           } catch (error) {
             console.log('Error [onQueryStarted]', error);
           }
@@ -61,7 +58,7 @@ export const authApi = createApi({
       }),
       logoutUser: build.mutation<void, void>({
         query: () => ({
-          url: 'logout',
+          endpointurl: 'logout',
           method: 'post',
         }),
       }),

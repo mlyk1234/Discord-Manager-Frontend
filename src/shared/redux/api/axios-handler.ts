@@ -2,9 +2,9 @@ import { useAppSelector } from './../index';
 import { authSlice } from './../features/auth.slice';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig } from 'axios';
-
-let access_token: string;
-export const injectableJWT = (_access_token: string) => {
+import { BASE_URL } from '../..';
+let access_token: string = localStorage.getItem('token') || '';
+export const injectableJWT = async (_access_token: string) => {
     access_token = _access_token;
 }
 
@@ -17,10 +17,10 @@ interface IErrorAxios {
 
 export const axiosBaseQuery =
   (
-    { baseUrl }: { baseUrl: string } = { baseUrl: '' }
+    { controller_url }: { controller_url: string } = { controller_url: '' }
   ): BaseQueryFn<
     {
-      url: string;
+      endpointurl: string;
       method: AxiosRequestConfig['method'];
       data?: AxiosRequestConfig['data'];
       params?: AxiosRequestConfig['params'];
@@ -29,20 +29,15 @@ export const axiosBaseQuery =
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params, requireJwt }) => {
+  async ({ endpointurl, method, data, params, requireJwt }) => {
     try {
-        // if(requireJwt) {
-        //     headers = {
-        //         Authorization: `Bearer ${access_token}`
-        //     }
-        // }
-      // axios.defaults.withCredentials = true; ;TODO cookie based JWT backend only
-      const result = await axios({ url: baseUrl + url, method, data, params, headers: {
+      const result = await axios({ url: BASE_URL + controller_url + endpointurl, method, data, params, headers: {
         Authorization: `Bearer ${access_token}`
       }});
       return { data: result.data };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
+      console.log('apakes', err)
       const errorObj: IErrorAxios = {
         error: {
           status: err.response?.status,

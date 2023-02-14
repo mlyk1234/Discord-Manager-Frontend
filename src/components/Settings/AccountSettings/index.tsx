@@ -1,11 +1,17 @@
 import { Button, Container, Input, PasswordInput, Text } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAppSelector } from "../../../shared/redux";
 
 export const AccountSettings = () => {
-    const loggedEmail = useAppSelector((state) => state.userSlice.user?.emailAddress);
-
+    const [initialEmail, setInitialEmail] = useState('');
+    const loggedEmail = useAppSelector((state) => state.userSlice.user.emailAddress);
+    console.log('LOOK', loggedEmail)
+    useEffect(() => {
+        if(loggedEmail) {
+            setInitialEmail(loggedEmail);
+        }
+    }, [loggedEmail])
     return (
         <Container p={0} className='w-full'>
             <Container p={0} pb={32} mb={32} className='w-full flex flex-row justify-between items-center border-b border-dfa-grey'>
@@ -68,7 +74,7 @@ const PasswordSettingGroup = () => {
     })
 
     const submitHandler = () => {
-        console.log('gg', form.values);
+        console.log('[Form]', form.values);
     }
     return (
         <Container p={0}>

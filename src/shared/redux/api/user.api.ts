@@ -10,14 +10,14 @@ const BASE_URL = 'http://localhost:3002';
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: axiosBaseQuery({
-    baseUrl: `${BASE_URL}/api/v1/user`,
+    controller_url: `/api/v1/user`,
   }),
   tagTypes: ['User'],
   endpoints(build) {
     return {
       registerUser: build.mutation<any, any>({
         query: (data) => ({
-          url: '/register',
+          endpointurl: '/register',
           method: 'post',
           data: data,
         }),
@@ -32,25 +32,23 @@ export const userApi = createApi({
         },
 
       }),
-      getMe: build.query<IUser, null>({
+      getDetails: build.mutation({
         query: () => {
           // eslint-disable-next-line no-lone-blocks
           {
             return {
-              url: '/get-profile',
+              endpointurl: '/get-profile',
               method: 'get',
               requireJwt: true
             };
           }
         },
         transformResponse: (result: { data: IUser }) => {
-          console.log('transform', result);
           return result.data;
         },
         async onQueryStarted(args, { dispatch, queryFulfilled }) {
           try {
             const { data } = await queryFulfilled;
-            console.log('Fetched [getMe]', data);
             dispatch(setUser(data));
             // eslint-disable-next-line no-empty
           } catch (error) {
@@ -62,4 +60,4 @@ export const userApi = createApi({
   },
 });
 
-export const { useRegisterUserMutation, useGetMeQuery } = userApi
+export const { useRegisterUserMutation } = userApi

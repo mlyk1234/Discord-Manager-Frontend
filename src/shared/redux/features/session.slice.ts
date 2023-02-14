@@ -16,9 +16,6 @@ const sessionSlice = createSlice({
     reducers: {
         updateSessionStatus(state, action: PayloadAction<_SESSION_STATE, string>) {
             state.session_status = action.payload;
-        },
-        setRememberMe() {
-            
         }
     }
 })

@@ -9,9 +9,11 @@ import { updateSessionStatus } from "../../../shared/redux/features/session.slic
 import { PASSWORD_PATTERN } from "../../../shared/definition/regex";
 import { Frame } from "../../shared/Framer";
 import { Bounded } from "../../shared/BoundedInput";
+import { AxiosResponse } from "axios";
 
 export const Login = () => {
     const navigate = useNavigate();
+    const [errorText, setErrorText] = useState(null);
 
     interface FormDataType { emailAddress: string, password: string, rememberMe?: boolean };
     const formData: FormDataType = { emailAddress: '', password: '', rememberMe: false};
@@ -28,15 +30,20 @@ export const Login = () => {
         initialValues: formData,
         validate: {
             emailAddress: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-            // password: (value) => (PASSWORD_PATTERN.test(value) ? null : 'Password is not ideal'),
             password: (value) => (value === null ? 'Please enter password.' : null),
         }
     })
 
     const handleSubmit = async () => {
-        console.log(form.values);
         loginUser({...form.values});
     }
+
+    useEffect(() => {
+        if(isError && error) {
+            const err = error as AxiosResponse;
+            setErrorText(err.data.message)
+        }
+    }, [error, isError]);
 
     return (
         <Frame str={{primary: 'Log in to your account', secondary: 'Welcome back! Please enter your details'}} >
@@ -57,7 +64,8 @@ export const Login = () => {
                 <Text className="inlined-component-centered text-white gap-1 pt-8">
                     Don't have an account?
                     <Text onClick={() => navigate('/register')} className="cursor-pointer font-medium text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)]">Sign up</Text></Text>
-                <ExternalAuth/>
+                    {errorText && <Text className="global-input-error text-center mt-2">{errorText}</Text>}
+                {/* <ExternalAuth/> */}
             </Container>
         </Frame>
     )
