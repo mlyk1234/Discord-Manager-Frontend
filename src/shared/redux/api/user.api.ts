@@ -1,4 +1,3 @@
-import { data } from './../../../pages/Dashboard/index';
 import { IUser } from './../types';
 import { axiosBaseQuery } from './axios-handler';
 import { createApi } from '@reduxjs/toolkit/query/react';

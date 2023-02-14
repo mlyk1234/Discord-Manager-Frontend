@@ -17,105 +17,6 @@ interface ISourceMap {
     access?: string
 }
 
-export const SourceMap: ISourceMap[] = [
-    {
-        path: "/",
-        name: "Home",
-        title: "Home",
-        component: <Auth><Auth.Login/></Auth>,
-        children: []
-    },
-    {
-        path: "/dashboard",
-        name: "Dashboard",
-        title: "Dashboard",
-        component: <Dashboard/>,
-        children: []
-    },
-    {
-        path: "/login",
-        name: "Login",
-        title: "Login",
-        component: <Auth.Login/>,
-        children: []
-    },
-    {
-        path: "/register",
-        name: "Register",
-        title: "Register",
-        component: <Auth.Register/>,
-        children: []
-    },
-    {
-        path: "/about",
-        name: "About Page",
-        title: "About Page",
-        component: <></>,
-        children: []
-    },
-    {
-        path: "*",
-        name: "Not Found",
-        title: "Not Found",
-        exact: true,
-        component: <NotFound404/>
-    }
-]
-
-// Direct Route Injection
-export const SourceMapV2: ISourceMap[] = [
-    {
-        path: "/",
-        name: "Home",
-        title: "Home",
-        requireAuth: false,
-        component: <Route path="/" element={<Auth><Auth.Login/></Auth>}></Route>
-    },
-    {
-        path: "/dashboard",
-        name: "Dashboard",
-        title: "Dashboard",
-        requireAuth: true,
-        component: <Route path="/dashboard" element={<Dashboard/>}></Route>
-    },
-    {
-        path: "/about",
-        name: "About Page",
-        title: "About",
-        requireAuth: false,
-        component: <Route path="/dashboard" element={<>Hi</>}></Route>
-    }
-]
-
-type MODE = 'public' | 'protected';
-
-interface ISourceMapV3 {
-    access: MODE;
-    routeMap: JSX.Element[];
-}
-export const SourceMapV3: ISourceMapV3[] = [
-    {
-        access: 'public',
-        routeMap: SourceMapV2.map((key, index) => {
-            if(key.requireAuth) {
-                return <Route key={index} path={key.path} element={key.component}></Route>
-            } else {
-                return <Route key={index} path={key.path} element={<>Unauthorized</>}></Route>
-            }
-        })
-    },
-    {
-        access: "protected",
-        routeMap: SourceMapV2.map((key, index) => {
-            if(key.requireAuth) {
-                return <Route key={index} path={key.path} element={key.component}></Route>
-            } else {
-                return <Route key={index} path={key.path} element={<>Unauthorized</>}></Route>
-            }
-        })
-    }
-]
-
 export const _SourceMapper: ISourceMap[] = [
     {
         path: "/",
@@ -170,7 +71,7 @@ export const _SourceMapper: ISourceMap[] = [
         name: "About Page",
         title: "About",
         requireAuth: false,
-        component: <>Hi</>,
+        component: <>Nothing to see</>,
         access: 'public'
     }
 ]
