@@ -7,3 +7,17 @@
     //     background-color: red;
     // }
 }
+
+$breakpoint: 720px;
+
+.list-alert {
+
+    @media screen and (min-width: 768px) {
+        @apply px-[170px];
+    }
+
+    @media screen and (max-width: 768px) {
+        @apply px-[40px];
+    }
+
+}

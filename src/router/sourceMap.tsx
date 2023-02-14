@@ -2,6 +2,7 @@ import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Auth from "../components/auth";
 import NotFound404 from "../pages/404";
 import Dashboard from "../pages/Dashboard/";
+import { Unauthorized } from "../pages/Miscellaneous/Unauthorized";
 import { MyAlert } from "../pages/MyAlert";
 import { Settings } from "../pages/Settings";
 
@@ -182,7 +183,7 @@ export const DeFiAPIRoute = ({authenticated}: {authenticated: boolean}) => {
             return <Route key={index} path={key.path} element={key.component}></Route>;
         } else {
             if(key.access === 'protected') {
-                return <Route key={index} path={key.path} element={<>Unauthorized</>}></Route>
+                return <Route key={index} path={key.path} element={<Unauthorized/>}></Route>
             } else {
                 return <Route key={index} path={key.path} element={<Navigate to="/dashboard" state={{ from: location }} replace />}></Route>
             }

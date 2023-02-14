@@ -17,14 +17,11 @@ export const Login = () => {
     const formData: FormDataType = { emailAddress: '', password: '', rememberMe: false};
     const [loginUser, { isLoading, isError, error, isSuccess }] = useLoginUserMutation();
 
-    const dispatch = useAppDispatch();
-
     useEffect(() => {
         if(isSuccess) {
-            dispatch(updateSessionStatus('active'));
             navigate('/dashboard');
         };
-    }, [isLoading]);
+    }, [isSuccess]);
 
     const form = useForm({
         validateInputOnChange: true,

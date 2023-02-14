@@ -4,5 +4,7 @@ export interface IListAlert {
     watch: string,
     condition: string,
     price_target: string | number,
-    currency: string
+    currency?: string,
+    enabled: boolean,
+    createdDate: Date
 };

@@ -96,3 +96,42 @@
     line-height: 1.2;
     display: block;
 }
+
+// Mantine-UI Cloned Badge
+
+.dfa-badge-default {
+    @apply p-[1px] bg-white w-[153px] h-[34px];
+
+    overflow: unset;
+    border: 32px;
+    border-radius: 32px;
+    .bg-div {
+        @apply w-full h-full flex justify-center items-center;
+    }
+    .mantine-Badge-inner {
+        @apply py-[5px] w-full h-full bg-dfa;
+        border-radius: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.dfa-badge-configured {
+    @apply p-[1px] bg-gradient-to-r from-[#F49634] to-[#F4D37F] w-[153px] h-[34px];
+
+    overflow: unset;
+    border: 32px;
+    border-radius: 32px;
+    .bg-div {
+        @apply w-full h-full flex flex-row justify-center items-center;
+    }
+    .mantine-Badge-inner {
+        @apply py-[5px] w-full h-full bg-dfa;
+        border-radius: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+

@@ -27,7 +27,7 @@ export const DFAModal = ({opened, setOpened, str, children}: {opened: boolean, s
     )
 }
 
-interface IModalHeader {
+export interface IModalHeader {
     primary?: string,
     secondary?: string,
 }
