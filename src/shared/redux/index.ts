@@ -1,4 +1,4 @@
-import { notificationSetupApi } from './api/notification-setup';
+import { notificationSetupApi } from './api/notification-setup.api.';
 import { userApi } from './api/user.api';
 import { authApi } from './api/auth.api';
 import { priceFeedApi } from './api/price-feed.api';
@@ -12,7 +12,7 @@ import authReducer from './features/auth.slice';
 import sessionReducer from './features/session.slice';
 import priceFeedReducer from './features/price-feed.slice';
 import priceAlertReducer from './features/price-alert.slice';
-
+import notificationReducer from './features/notification.slice';
 // import { persistConfig, _IGNORED_ACTIONS } from './redux-storage';
 
 
@@ -27,6 +27,7 @@ export const rootReducer = combineReducers({
     sessionSlice: sessionReducer,
     priceFeedSlice: priceFeedReducer,
     priceAlertSlice: priceAlertReducer,
+    notificationSlice: notificationReducer,
 });
 
 // const persistedReducer = persistReducer(persistConfig, rootReducer);

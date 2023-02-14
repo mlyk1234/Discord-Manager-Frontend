@@ -1,15 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import logo from './logo.svg';
 import './App.scss';
 import Layout from './layout';
-import Auth from './components/auth';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import { DeFiAPIRoute } from './router/sourceMap';
-import { useAppSelector } from './shared/redux';
-import { useHooks } from './shared/hooks';
+import { useGeneralHooks, useRequireAuthHooks } from './shared/hooks';
 import { BrowserRouter as Router } from 'react-router-dom';
-import AppRoute from './router';
-import { Footer, Header } from '@mantine/core';
 import DeFiAlert from './components/AppLayout';
 import Viewbase from './components/Viewbase';
 
@@ -40,8 +32,9 @@ function App() {
   //     }
   //   }
   // }, [access_token]);
-  useHooks();
-
+  useGeneralHooks();
+  useRequireAuthHooks();
+  
   return (
     <Router>
       <Layout header={<DeFiAlert.AppHeader/>} body={<Viewbase/>} footer={<DeFiAlert.AppFooter/>} ></Layout>

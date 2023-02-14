@@ -9,8 +9,8 @@ import { DFAGrid } from "../../components/shared/DFAGrid";
 import { integration_name } from "../../asset/integrations";
 import { useForm } from "@mantine/form";
 import { useCreateAlertMutation } from "../../shared/redux/api/price-alert.api";
-import { DFAModal } from "../../components/Modal";
-import { AlertCount } from "../../components/Alert/AlertCount";
+import { DFAModal, IModalHeader } from "../../components/Modal";
+import { AlertCount, AlertCountWidget } from "../../components/Alert/AlertCount";
 import { ISupportedPair } from "../../shared/redux/features/price-feed.slice";
 
 interface ISelectAlert {
@@ -57,7 +57,9 @@ const mapCondition = (type: string) => {
 export default function Dashboard () {
     const [typeOfNotification, setTypeOfNotification] = useState<string[]>(notification_channel);
     const [typeOfNetwork, setTypeOfNetwork] = useState<string[]>([]);
-    const [typeOfPair, setTypeOfPair] = useState<string[] | any[]>(['one', 'two']);
+    const [typeOfPair, setTypeOfPair] = useState<string[] | any[]>([]);
+
+    const [modalMsg, setModalMsg] = useState<IModalHeader>({ primary: '', secondary: '' });
     const [opened, setOpened] = useState<boolean>(false);
     const priceFeedNetwork = useAppSelector((state) => state.priceFeedSlice);
     
@@ -67,6 +69,8 @@ export default function Dashboard () {
         initialValues: { notify_via: '', network: '', pair: '', price_target: '', condition: '' },
     })
 
+    console.log('notice me', priceFeedNetwork)
+
     useEffect(() => {
         if(priceFeedNetwork && priceFeedNetwork.length > 0) {
             const network: string[] = [];
@@ -75,11 +79,7 @@ export default function Dashboard () {
             });
             setTypeOfNetwork(network);
         }
-    }, []);
-
-    const onNetworkSelect = (event: any) => {
-        console.log('key', event.target.value);
-    }
+    }, [priceFeedNetwork]);
 
     useEffect(() => {
         if(form.values.network !== '' && priceFeedNetwork.length > 0) {
@@ -95,26 +95,42 @@ export default function Dashboard () {
         return;
     }, [form.values.network])
 
-    const dispatch = useAppDispatch();
-
-    const navigate = useNavigate();
-
     const onSubmitAlert = () => {
-        setOpened(!opened)
-
         const watch = `${form.values.network}-${form.values.pair}`;
         const condition = mapCondition(form.values.condition);
         createAlert({
             watch,
             price_target: Number(form.values.price_target),
-            condition
+            condition,
+            channel: form.values.notify_via
         });
     };
+
+    useEffect(() => {
+        if(isSuccess) {
+            setOpened(!opened);
+            setModalMsg({
+                primary: 'Alert Created',
+                secondary: 'Success! Your alert has been saved.'
+            })
+        }
+    }, [isSuccess])
+
+    useEffect(() => {
+        if(isError) {
+            setModalMsg({
+                primary: 'Unable to create alert',
+                secondary: 'Please check the missing fields.'
+            });
+            setOpened(!opened);
+        };
+    }, [isError])
+
 
     return (
         <DFAGrid str={{primary: 'Price Alert', secondary: 'Get notified when a coin goes above or below a price target.'}}>
             <DFAModal opened={opened} setOpened={setOpened} 
-                str={{primary: 'Alert Created', secondary: 'Success! Your alert has been saved.'}}
+                str={{primary: modalMsg.primary, secondary: modalMsg.secondary}}
             >
                 <AlertCount type='variant_2'/>
             </DFAModal>
@@ -126,6 +142,7 @@ export default function Dashboard () {
                     className="w-[124px]"
                     radius={'xl'}
                     data={typeOfNetwork}
+                    placeholder='Network'
                 />
             </div>
             <div className="inlined-wrapped gap-4 text-[20px] text-white">
@@ -135,6 +152,7 @@ export default function Dashboard () {
                     className="w-[153px]"
                     radius={'xl'}
                     data={typeOfNotification}
+                    placeholder='Notification'
                 />
                 <Text>as soon as</Text>
                 <Select
@@ -142,6 +160,7 @@ export default function Dashboard () {
                     className="w-[124px]"
                     radius={'xl'}
                     data={typeOfPair}
+                    placeholder='Pair'
                 />
                 <Text>goes</Text>
                 <Select
@@ -149,6 +168,7 @@ export default function Dashboard () {
                     className="w-[134px]"
                     radius={'xl'}
                     data={condition}
+                    placeholder='Condition'
                 />
                 <Text>the price of</Text>
                 <NumberInput
@@ -170,7 +190,7 @@ export default function Dashboard () {
                 <Text>Disable this alert after it triggers once.</Text>
             </div>
             <Button onClick={() => onSubmitAlert()} radius={'xl'} className='dfa-btn-gradient'>Set Alert</Button>
-            <Text className="text-dfa-grey text-center text-base">You have <span className="dfa-text-gradient">0</span> active price alerts.</Text>
+            <AlertCountWidget/>
         </DFAGrid>
     )
 }

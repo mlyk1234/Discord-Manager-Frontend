@@ -76,7 +76,7 @@ const PasswordSettingGroup = () => {
                 <div className="flex flex-col gap-[22px]">
                 {
                     inputs.map((item, index) => 
-                        <Container key={item.name} p={0} className='w-full flex flex-row justify-between items-center'>
+                        <Container key={index} p={0} className='w-full flex flex-row justify-between items-center'>
                             <Text className="text-white text-sm font-medium">{item.name}</Text>
                             <PasswordInput className="w-[336px]" placeholder={item.desc} radius={'xl'}/>
                         </Container>

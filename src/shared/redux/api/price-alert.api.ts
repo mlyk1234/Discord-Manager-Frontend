@@ -1,5 +1,6 @@
 import { axiosBaseQuery } from './axios-handler';
 import { createApi } from '@reduxjs/toolkit/query/react';
+import { initUserPriceAlert } from '../features/price-alert.slice';
 const BASE_URL = 'http://localhost:3002';
 
 export const priceAlertApi = createApi({
@@ -40,8 +41,10 @@ export const priceAlertApi = createApi({
                 },
                 async onQueryStarted(args, { dispatch, queryFulfilled }) {
                     try {
+                        console.log('Fulfilled [getAlert]')
                         const { data } = await queryFulfilled;
-                        console.log('Fulfilled [queryAlert]')
+                        dispatch(initUserPriceAlert(data));
+                        
                     } catch (error) {
                         console.log('Error [queryAlert]', error)
                     }

@@ -35,7 +35,7 @@ const tabData: ITab[] = [{
 const AlertTabs = () => {
     const [tabs, setTabs] = useState<ITab[]>(tabData);
     return (
-        <Container className="flex flex-col items-center text-center gap-[18px]">
+        <Container p={0} className="flex flex-col items-center text-center gap-[18px]">
             <Tabs defaultValue={'Active Alert'}>
                 <Tabs.List>
                     {tabs && tabs.length > 0 ?
@@ -51,7 +51,7 @@ const AlertTabs = () => {
                     }
                 </Tabs.List>
                 {tabs && tabs.length > 0 ?
-                        tabs.map(item => <Tabs.Panel value={item.label}>{item.component}</Tabs.Panel>)
+                        tabs.map(item => <Tabs.Panel className="w-[100vw]" value={item.label}>{item.component}</Tabs.Panel>)
                         :
                         null
                 }

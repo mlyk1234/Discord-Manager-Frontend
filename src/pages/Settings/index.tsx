@@ -41,8 +41,8 @@ const SettingTabs = () => {
             <Tabs className="w-full" defaultValue={'Account Settings'}>
                 <Tabs.List>
                     {tabs && tabs.length > 0 ?
-                        tabs.map(item => 
-                            <Tabs.Tab key={item.label} value={item.label} disabled={item.disabled}>
+                        tabs.map((item, index) => 
+                            <Tabs.Tab key={index} value={item.label} disabled={item.disabled}>
                                 <div className="dfa-tab">
                                     {item.label}
                                     <div className="dfa-line-1"></div>
@@ -53,7 +53,9 @@ const SettingTabs = () => {
                     }
                 </Tabs.List>
                 {tabs && tabs.length > 0 ?
-                        tabs.map(item => <Tabs.Panel key={item.label} className="w-full" value={item.label}>{item.component}</Tabs.Panel>)
+                        tabs.map((item, index) => 
+                            <Tabs.Panel key={index} className="w-full" value={item.label}>{item.component}</Tabs.Panel>
+                        )
                         :
                         null
                 }

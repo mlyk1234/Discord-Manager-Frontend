@@ -1,4 +1,4 @@
-import { notificationSetupApi } from './api/notification-setup';
+import { notificationSetupApi } from './api/notification-setup.api.';
 import { userApi } from './api/user.api';
 import { authApi } from './api/auth.api';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';

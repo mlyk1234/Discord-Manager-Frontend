@@ -48,7 +48,7 @@ export const authApi = createApi({
                 milliseconds
             }));
             
-            const res = updateSessionStatus('active');
+            dispatch(updateSessionStatus('active'))
             //   axios.defaults.headers.Authorization = `Bearer ${data.data.access_token}`;
             await dispatch(userApi.endpoints.getMe.initiate(null))
             
