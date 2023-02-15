@@ -15,22 +15,22 @@
 }
 
 .framer-regular {
-    @apply w-[600px] p-[80px];
+    @apply w-[600px] p-[80px] border-solid;
 }
 
 .framer-small {
-    @apply w-[400px] pt-[32px] pr-[40px] pb-[32px] pl-[40px];
+    @apply w-[400px] pt-[32px] pr-[40px] pb-[32px] pl-[40px] border-solid;
 }
 
 .dfa-header {
-    @apply bg-[#141415];
+    @apply bg-[#141415] border-solid;
     height: unset;
     padding: 14px 80px;
     max-height: none;
 }
 
 .dfa-footer {
-    @apply bg-[#141415] h-[72px];
+    @apply bg-[#141415] h-[72px] border-solid;
     padding: 20px 80px;
     max-height: none;
 }
@@ -78,7 +78,7 @@
 }
 
 .dfa-border-color {
-    @apply border-[#667085];
+    @apply border-[#667085] border-solid;
 }
 
 // Mantine-UI Error Cloned
@@ -100,7 +100,7 @@
 // Mantine-UI Cloned Badge
 
 .dfa-badge-default {
-    @apply p-[1px] bg-white w-[153px] h-[34px];
+    @apply p-[1px] bg-white w-[153px] h-[34px] border-solid;
 
     overflow: unset;
     border: 32px;
@@ -118,7 +118,7 @@
 }
 
 .dfa-badge-configured {
-    @apply p-[1px] bg-gradient-to-r from-[#F49634] to-[#F4D37F] w-[153px] h-[34px];
+    @apply p-[1px] bg-gradient-to-r from-[#F49634] to-[#F4D37F] w-[153px] h-[34px] border-solid;
 
     overflow: unset;
     border: 32px;

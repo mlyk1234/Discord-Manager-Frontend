@@ -7,11 +7,9 @@ import reportWebVitals from './reportWebVitals';
 import { store } from './shared/redux';
 import { Provider } from 'react-redux';
 
-import Layout from './layout';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/es/persistStore';
 import { MantineProvider, Button, AppShell, Header } from '@mantine/core';
-import { themed } from './lib/theme/theme-provider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

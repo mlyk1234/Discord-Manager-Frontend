@@ -1,23 +1,16 @@
+.list-alert {
+    @media (min-width: 768px) {
+        @apply px-[170px] bg-inherit;
+    }
+
+    @media (max-width: 768px) {
+        @apply px-[40px] bg-inherit;
+    }
+}
+
 .mantine-Switch-body {
 
     input:checked+.mantine-Switch-track {
         @apply border-0 bg-gradient-to-r from-[#F49634] to-[#F4D37F] #{!important};
     }
-    // .mantine-Switch-track {
-    //     background-color: red;
-    // }
-}
-
-$breakpoint: 720px;
-
-.list-alert {
-
-    @media screen and (min-width: 768px) {
-        @apply px-[170px];
-    }
-
-    @media screen and (max-width: 768px) {
-        @apply px-[40px];
-    }
-
 }
