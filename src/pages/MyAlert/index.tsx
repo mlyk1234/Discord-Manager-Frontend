@@ -3,7 +3,7 @@ import { useState } from "react"
 import { ActiveAlert } from "../../components/Alert/ActiveAlert"
 import { AlertCount } from "../../components/Alert/AlertCount";
 import { AlertHistory } from "../../components/Alert/AlertHistory";
-import { DFAGrid } from "../../components/shared/DFAGrid"
+import { DFAGrid } from "../../components/shared/DFAGrid/DFAGrid"
 import './index.scss';
 export const MyAlert = () => {
 

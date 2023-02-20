@@ -10,19 +10,23 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import persistStore from 'redux-persist/es/persistStore';
 import { MantineProvider, Button, AppShell, Header } from '@mantine/core';
+import { NavigationProgress, setNavigationProgress } from '@mantine/nprogress';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
 let persistor = persistStore(store);
+
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       {/* <PersistGate persistor={persistor}> */}
         <MantineProvider theme={{ colorScheme: 'dark', fontFamily: 'inherit' }}>
-          <AppShell className='dfa-app-shell' padding={0}>
-            <App/>
+          <AppShell className='dfa-app-shell flex flex-col' padding={0}>
+            <NavigationProgress/>
+              <App/>
           </AppShell>
         </MantineProvider>
       {/* </PersistGate> */}

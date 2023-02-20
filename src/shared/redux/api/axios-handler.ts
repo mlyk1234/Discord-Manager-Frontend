@@ -1,3 +1,4 @@
+import { data } from './../../../components/Alert/AlertForm/index';
 import { useAppSelector } from './../index';
 import { authSlice } from './../features/auth.slice';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
@@ -37,7 +38,6 @@ export const axiosBaseQuery =
       return { data: result.data };
     } catch (axiosError) {
       const err = axiosError as AxiosError;
-      console.log('apakes', err)
       const errorObj: IErrorAxios = {
         error: {
           status: err.response?.status,

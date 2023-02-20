@@ -1,5 +1,8 @@
 .inlined-component-centered {
     @apply flex justify-center items-center;
+    @media (max-width: 720px) {
+        @apply flex flex-col;
+    }
 }
 
 .inlined-component {
@@ -12,10 +15,18 @@
 
 .inlined-wrapped {
     @apply flex flex-wrap items-center;
+    @media (max-width: 720px) {
+        @apply flex flex-wrap;
+    }
 }
 
 .framer-regular {
-    @apply w-[600px] p-[80px] border-solid;
+    @media (min-width: 768px) {
+        @apply w-[600px] p-[80px] border-solid;
+    }
+    @media (max-width: 768px) {
+        @apply p-[16px] border-solid;
+    }
 }
 
 .framer-small {
@@ -27,12 +38,21 @@
     height: unset;
     padding: 14px 80px;
     max-height: none;
+    @media (max-width: 720px) {
+        padding: 14px 16px;
+    }
 }
 
 .dfa-footer {
     @apply bg-[#141415] h-[72px] border-solid;
     padding: 20px 80px;
     max-height: none;
+    @media (max-width: 720px) {
+        @apply px-4 py-3 h-fit text-center text-xs;
+        .inlined-between {
+            @apply flex flex-col gap-2;
+        }
+    }
 }
 
 .dfa-text-gradient {
@@ -136,9 +156,14 @@
 }
 
 .dfa-app-shell {
-
     .mantine-AppShell-main {
         padding: 0;
+    }
+}
+
+.dfa-password-input {
+    .mantine-PasswordInput-visibilityToggle {
+        @apply mr-[16px] text-dfa-grey;
     }
 }
 
@@ -153,6 +178,7 @@ body {
       /* Chrome, Edge, and Safari */
       *::-webkit-scrollbar {
         width: 0.01vw;
+        height: 0.5vh;
       }
     
       *::-webkit-scrollbar-track {

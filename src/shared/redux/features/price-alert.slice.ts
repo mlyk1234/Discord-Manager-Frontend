@@ -5,6 +5,7 @@ export interface IPriceAlert {
     id: number,
     watch: string,
     price_target: number,
+    trigger_once: boolean,
     condition: string,
     channel: string,
     enabled: boolean,

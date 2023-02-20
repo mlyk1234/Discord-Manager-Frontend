@@ -9,7 +9,9 @@ import { useGetNotificationSetupMutation } from "../../../shared/redux/api/notif
 export const NotificationSetup = () => {
 
     return (
-        <Container p={0}><IntegrationList/></Container>
+        <Container p={0} className='h-full'>
+            <IntegrationList/>
+        </Container>
     )
 }
 
@@ -20,6 +22,7 @@ interface IIntegration {
     webhook_url?: boolean,
     status: boolean,
     connected: boolean,
+    notificationsEnabled: boolean,
 }
 const initialIntegrations: IIntegration[] = [
     {
@@ -27,7 +30,8 @@ const initialIntegrations: IIntegration[] = [
         icon: '',
         desc: `Link your account with our Telegram bot to receive customizable DeFi alerts.`,
         status: true,
-        connected: false
+        connected: false,
+        notificationsEnabled: false
     },
     {
         name: 'Slack',
@@ -36,6 +40,7 @@ const initialIntegrations: IIntegration[] = [
         webhook_url: false,
         status: false,
         connected: false,
+        notificationsEnabled: false
     },
     {
         name: 'Discord',
@@ -43,7 +48,8 @@ const initialIntegrations: IIntegration[] = [
         desc: `Integrate your account with any Discord server. You'll just need to provide us with a specific Webhook URL to send you messages.`,
         webhook_url: true,
         status: false,
-        connected: false
+        connected: false,
+        notificationsEnabled: false
     }
 ];
 
@@ -61,7 +67,7 @@ const IntegrationList = () => {
 
     const [slackUrl, setSlackUrl] = useState<string>('');
     const [telegramUrl, setTelegramUrl] = useState<string>('');
-
+    const [errorDiscord, setErrorDiscord] = useState<boolean | null>(null);
     const onSelectMode = (item: integration_name) => {
         setCurrentSetup(item);
         integrations.forEach((v) => {
@@ -81,7 +87,7 @@ const IntegrationList = () => {
     const [trigger] = useGetNotificationSetupMutation();
     useEffect(() => {
         integrations.forEach((v) => {
-            if(Object.values(notificationState).find((item) => item.name === v.name).connected) v.connected = true;
+            if(Object.values(notificationState).find((item) => item.name === v.name).notificationsEnabled) v.notificationsEnabled = true;
             else v.connected = false;
         });
         setIntegrations([...integrations]);
@@ -103,12 +109,9 @@ const IntegrationList = () => {
 
     useEffect(() => {
         if(currentSetup === 'Slack') {
-            console.log('CIACIACIA')
             console.log(slackUrl)
-            console.log(notificationState.slackDetails.authLink)
             setLinkToConnect(slackUrl)
         } else if(currentSetup === 'Telegram') {
-            console.log('CIACIACIA')
             console.log(telegramUrl)
             setLinkToConnect(telegramUrl)
         } else {
@@ -143,6 +146,11 @@ const IntegrationList = () => {
                     jwtTemp
                 );
             } else if (item === 'Discord') {
+                if(!discordWebhookUrl) {
+                    setErrorDiscord(true);
+                    // eslint-disable-next-line no-throw-literal
+                    throw 'Error Discord Webhook';
+                }
                 await saveUserNotificationSettings
                 (
                     true,
@@ -153,20 +161,25 @@ const IntegrationList = () => {
                     discordWebhookUrl,
                     emailStatus,
                     jwtTemp
-                );
+                ).then(() => setErrorDiscord(false)).catch((err) => {
+                    setErrorDiscord(true);
+                });
             }
             await trigger();
         } catch (error) {
-            console.log('[Error]: onSave')
+            console.log('[Error]: onSave', error)
         }
     }
 
     const onSetDiscordWebhookUrl = (str: string) => {
         setDiscordWebhookUrl(str);
+        if(!str && str.length === 0) setErrorDiscord(true);
+        else setErrorDiscord(false);
     }
 
     return (
-        <Container p={0} className='w-full flex flex-col'>
+        <>
+        <Container p={0} className='w-full flex flex-col h-full'>
             <Container p={0} className='w-full flex flex-row justify-center items-center gap-[50px]'>
                 {integrations && integrations.length > 0 ?
                     <>
@@ -179,22 +192,37 @@ const IntegrationList = () => {
                     null
                 }
             </Container>
-            <Container p={0} className="w-[400px]">
+            <Container p={0} className="max-w-[400px] flex flex-col flex-grow items-center">
                 <Text className="text-dfa-grey mt-8">{integrations.find(item => item.name === currentSetup)?.desc}</Text>
                 {integrations.find(item => item.name === currentSetup)?.webhook_url && 
-                    <Input onChange={(v: BaseSyntheticEvent) => onSetDiscordWebhookUrl(v.target.value)} className="mt-8" radius={'xl'} placeholder="Enter webhook url"/>
-                }
-                {!integrations.find(item => item.name === currentSetup)?.connected ?
-                    <>
-                        <Button
-                        onClick={() => 
-                            window.open(linkToConnet)
+                    <div className="flex flex-col justify-center">
+                        <Input width={"100%"} defaultValue={discordWebhookUrl} onChange={(v: BaseSyntheticEvent) => onSetDiscordWebhookUrl(v.target.value)} className="mt-8 w-[336px] flex items-center justify-center" radius={'xl'} placeholder="Enter webhook url"/>
+
+                        {errorDiscord &&
+                            <Text className="text-red-500 text-xs mt-1">Please enter valid <a target="_blank" href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks" className="underline cursor-pointer">discord webhook url.</a></Text>
                         }
-                        radius={'xl'} className="dfa-btn-gradient mt-8">
-                            Connect Now
-                        </Button>
-                        <Text onClick={() => onSave(currentSetup)} className="cursor-pointer text-white text-base mt-3">Save</Text>
-                        <div className="inlined-component-centered gap-4 mt-[132px]">
+                        {discordStatus &&
+                            <Text className="text-green-500 text-xs mt-1">Bot Connected</Text>
+                        }
+                    </div>
+                }
+                {!integrations.find(item => item.name === currentSetup)?.notificationsEnabled ?
+                    <>
+                        {currentSetup !== 'Discord' ?
+                            <Button
+                                onClick={() => {
+                                    window.open(linkToConnet)
+                                    onSave(currentSetup)
+                                }}
+                                radius={'xl'} className="dfa-btn-gradient mt-8">
+                                Connect Now
+                            </Button> :
+                            <Button onClick={() => onSave(currentSetup) } radius={'xl'} className="dfa-btn-gradient mt-4 w-[124px]">
+                                Save
+                            </Button>
+                        }
+                        {/* <Text onClick={() => onSave(currentSetup)} className="cursor-pointer text-white text-base mt-3">Save</Text> */}
+                        <div className="inlined-component-centered items-end gap-4 flex-grow mt-5">
                             <Text className="text-dfa-grey">Status:</Text>
                             <Badge className="dfa-badge-default">
                                 <div className="inlined-component bg-div w-full h-full gap-[10px]">
@@ -205,12 +233,20 @@ const IntegrationList = () => {
                     </>
                      :
                     <>
-                        <Button
-                            onClick={() => 
-                                window.open(linkToConnet)
-                            }
-                            radius={'xl'} className="dfa-btn-gradient mt-8">Reconnect</Button>
-                        <div className="inlined-component-centered gap-4 mt-[132px]">
+                        {currentSetup !== 'Discord' ?
+                            <Button
+                                onClick={() => {
+                                    window.open(linkToConnet)
+                                    onSave(currentSetup)
+                                }}
+                                radius={'xl'} className="dfa-btn-gradient mt-8">
+                                Reconnect
+                            </Button> :
+                            <Button onClick={() => onSave(currentSetup) } radius={'xl'} className="dfa-btn-gradient mt-4 w-[124px]">
+                                Save
+                            </Button>
+                        }
+                        <div className="inlined-component-centered items-end gap-4 flex-grow mt-5">
                             <Text className="text-dfa-grey">Status:</Text>
                             <Badge className="dfa-badge-configured">
                                 <div className="inlined-component bg-div w-full h-full gap-[10px]">
@@ -222,5 +258,7 @@ const IntegrationList = () => {
                 }
             </Container>
         </Container>
+
+        </>
     )
 }

@@ -2,13 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 interface IAuthState {
     access_token: string;
-    expiresIn: number | null;
+    expiresIn: number;
     milliseconds: number;
 }
 
 const initialState: IAuthState = {
     access_token: '',
-    expiresIn: null,
+    expiresIn: 0,
     milliseconds: 0
 }
 export const authSlice = createSlice({

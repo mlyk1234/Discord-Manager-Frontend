@@ -1,4 +1,4 @@
-import { Container } from "@mantine/core";
+import { Button, Container } from "@mantine/core";
 import AppRoute from "../../router";
 import "./index.scss";
 

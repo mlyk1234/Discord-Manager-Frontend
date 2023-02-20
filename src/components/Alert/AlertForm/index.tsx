@@ -3,11 +3,12 @@ import { useForm } from "@mantine/form";
 import { useEffect, useState } from "react";
 import { integration_name } from "../../../asset/integrations";
 import { useAppSelector } from "../../../shared/redux";
-import { useCreateAlertMutation } from "../../../shared/redux/api/price-alert.api";
+import { useCreateAlertMutation, useModifyAlertMutation } from "../../../shared/redux/api/price-alert.api";
 import { DFAModal, IModalHeader } from "../../Modal"
-import { DFAGrid } from "../../shared/DFAGrid";
+import { DFAGrid } from "../../shared/DFAGrid/DFAGrid";
 import { AlertCount, AlertCountWidget } from "../AlertCount"
 import { CurrentPriceWidget } from "../../shared/CurrentPriceWidget/CurrentPriceWidget";
+import "./index.scss";
 
 interface ISelectAlert {
     image?: string,
@@ -19,13 +20,28 @@ interface ISelectAlert {
 export const data: ISelectAlert[]  = [];
 
 const notification_channel: integration_name[] = ['Telegram', 'Slack', 'Discord'];
+
 const condition = ['above', 'below'];
+
 const mapCondition = (type: string) => {
     if(type === 'above') return 'gte'
     else return 'lte';
 }
 
-export const AlertForm = () => {
+type AlertFormMode = 'DEFAULT' | 'EDIT';
+
+export interface FormState {
+    id?: number,
+    channel: string,
+    network: string,
+    pair: string,
+    price_target: number,
+    trigger_once: boolean,
+    condition: string,
+}
+const initialValues: FormState = { channel: '', network: '', pair: '', price_target: 0, trigger_once: true, condition: '' };
+
+export const AlertForm = ({mode = 'DEFAULT', editAlertData}: {mode?: AlertFormMode, editAlertData?: FormState}) => {
     const [typeOfNotification, setTypeOfNotification] = useState<string[]>(notification_channel);
     const [typeOfNetwork, setTypeOfNetwork] = useState<string[]>([]);
     const [typeOfPair, setTypeOfPair] = useState<string[] | any[]>([]);
@@ -33,11 +49,18 @@ export const AlertForm = () => {
     const [opened, setOpened] = useState<boolean>(false);
     const priceFeedNetwork = useAppSelector((state) => state.priceFeedSlice);
 
-    const [createAlert, { isLoading, isError, error, isSuccess }] = useCreateAlertMutation();
-
+    const [createAlert, { isLoading: isLoadingCreate, isError: isErrorCreate, error: errorCreate, isSuccess: isSuccessCreate }] = useCreateAlertMutation();
+    const [modifyAlert, { isLoading: isLoadingModify, isError: isErrorModify, error: errorModify, isSuccess: isSuccessModify }] = useModifyAlertMutation();
+    
     const form = useForm({
-        initialValues: { notify_via: '', network: '', pair: '', price_target: '', condition: '' },
+        initialValues: mode === 'DEFAULT' ? initialValues : editAlertData
     })
+
+    useEffect(() => {
+        if(mode === 'EDIT') {
+            form.setValues({...editAlertData, price_target: Number(editAlertData?.price_target)})
+        }
+    }, [])
 
     useEffect(() => {
         if(priceFeedNetwork && priceFeedNetwork.length > 0) {
@@ -64,37 +87,43 @@ export const AlertForm = () => {
     }, [form.values.network]);
 
     useEffect(() => {
-        if(isSuccess) {
+        if(isSuccessCreate || isSuccessModify) {
             setOpened(!opened);
             setModalMsg({
-                primary: 'Alert Created',
+                primary: mode === 'DEFAULT' ? 'Alert Created' : 'Alert Modified',
                 secondary: 'Success! Your alert has been saved.'
             })
         }
-    }, [isSuccess]);
+    }, [isSuccessCreate, isSuccessModify]);
 
     useEffect(() => {
-        if(isError) {
+        if(isErrorCreate || isErrorModify) {
             setModalMsg({
-                primary: 'Unable to create alert',
+                primary: mode === 'DEFAULT' ? 'Unable to create alert' : 'Failed to modify your alert',
                 secondary: 'Please check the missing fields.'
             });
             setOpened(!opened);
         };
-    }, [isError]);
+    }, [isErrorCreate, isErrorModify]);
 
     
-    const onSubmitAlert = () => {
+    const onSubmitAlert = (isEdit?: boolean) => {
         const watch = `${form.values.network}-${form.values.pair}`;
         const condition = mapCondition(form.values.condition);
-        createAlert({
+        const payload = {
             watch,
-            price_target: Number(form.values.price_target),
+            price_target: form.values.price_target,
+            trigger_once: form.values.trigger_once,
             condition,
-            channel: form.values.notify_via
-        });
+            channel: form.values.channel
+        }
+        if(!isEdit) {
+            createAlert({...payload});
+        } else {
+            modifyAlert({id: editAlertData?.id, ...payload})
+        }
     };
-
+    console.log(form.values.trigger_once)
     return (
         <DFAGrid str={{primary: 'Price Alert', secondary: 'Get notified when a coin goes above or below a price target.'}}>
             <DFAModal opened={opened} setOpened={setOpened} 
@@ -114,22 +143,28 @@ export const AlertForm = () => {
                 />
             </div>
             <div className="inlined-wrapped gap-4 text-[20px] text-white">
-                <Text>Send me an</Text>
-                <Select
-                    {...form.getInputProps('notify_via')}
-                    className="w-[153px]"
-                    radius={'xl'}
-                    data={typeOfNotification}
-                    placeholder='Notification'
-                />
-                <Text>as soon as</Text>
-                <Select
-                    {...form.getInputProps('pair')}
-                    className="w-[124px]"
-                    radius={'xl'}
-                    data={typeOfPair}
-                    placeholder='Pair'
-                />
+                <div className="responsive-input">
+                    <Text>Send me an</Text>
+                    <Select
+                        defaultValue={form.values.channel}
+                        {...form.getInputProps('channel')}
+                        className="w-[153px]"
+                        radius={'xl'}
+                        data={typeOfNotification}
+                        placeholder='Notification'
+                    />
+                </div>
+                <div className="responsive-input">
+                    <Text>as soon as</Text>
+                    <Select
+                        {...form.getInputProps('pair')}
+                        className="w-[124px]"
+                        radius={'xl'}
+                        data={typeOfPair}
+                        placeholder='Pair'
+                    />
+                </div>
+                <div className="responsive-input">
                 <Text>goes</Text>
                 <Select
                     {...form.getInputProps('condition')}
@@ -138,23 +173,36 @@ export const AlertForm = () => {
                     data={condition}
                     placeholder='Condition'
                 />
+                </div>
+                <div className="responsive-input">
                 <Text>the price of</Text>
                 <NumberInput
                     {...form.getInputProps('price_target')}
-                    value={0.00}
+                    defaultValue={10.00}
                     className="w-[201px]"
                     radius={'xl'}
                     precision={2}
                 />
+                </div>
                 <Text>on chain.</Text>
+                
             </div>
-            <CurrentPriceWidget/>
+            {mode === 'DEFAULT' && <CurrentPriceWidget/>}
             <div className="inlined-wrapped text-base text-white gap-2">
-                <Checkbox/>
+                <Checkbox checked={form.values.trigger_once} {...form.getInputProps('trigger_once')}/>
                 <Text>Disable this alert after it triggers once.</Text>
             </div>
-            <Button onClick={() => onSubmitAlert()} radius={'xl'} className='dfa-btn-gradient'>Set Alert</Button>
-            <AlertCountWidget/>
+            <Button 
+                onClick={() => onSubmitAlert(mode === 'DEFAULT' ? false : true)}
+                radius={'xl'}
+                className='dfa-btn-gradient'>
+                {mode === 'DEFAULT' ? <>Set Alert</> : <>Save Alert</>}
+            </Button>
+            {mode === 'DEFAULT' &&
+                <>
+                    <AlertCountWidget/>
+                </>
+            }
         </DFAGrid>
     )
 }

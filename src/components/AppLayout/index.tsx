@@ -3,6 +3,8 @@ import { Button, Footer, Header, Text } from '@mantine/core';
 import { ReactComponent as ReactLogo } from "../../asset/DFA/dfa.icon.svg";
 import { DropDown } from "../shared/Dropdown";
 import { useNavigate } from "react-router-dom";
+import "./index.scss";
+
 function AppHeader() {
     const navigate = useNavigate();
     const session = useAppSelector((state) => state.sessionSlice.session_status)

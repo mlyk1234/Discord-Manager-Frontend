@@ -10,6 +10,7 @@ module.exports = {
         'dfa': '#18191A',
         'framer': '#141415',
         'dfa-grey': '#667085',
+        'dfa-grey-2': '#202124'
       },
       borderColor: {
         'dfa-grey': '#667085',

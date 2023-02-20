@@ -1,0 +1,14 @@
+.DFA-Grid-root {
+    flex-grow: 1;
+    @media (min-width: 720px) {
+        @apply border-solid flex flex-col gap-8;
+        // width: 100%;
+        width: 540px;
+        flex-grow: 1;
+    }
+    @media (max-width: 720px) {
+        // width: 100%;
+        @apply flex flex-col gap-4;
+        max-width: 540px;
+    }
+}

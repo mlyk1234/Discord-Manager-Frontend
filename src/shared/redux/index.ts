@@ -1,3 +1,4 @@
+import { userSettingApi } from './api/user-setting.api';
 import { notificationSetupApi } from './api/notification-setup.api.';
 import { userApi } from './api/user.api';
 import { authApi } from './api/auth.api';
@@ -21,6 +22,7 @@ export const rootReducer = combineReducers({
     [userApi.reducerPath]: userApi.reducer,
     [priceFeedApi.reducerPath]: priceFeedApi.reducer,
     [priceAlertApi.reducerPath]: priceAlertApi.reducer,
+    [userSettingApi.reducerPath]: userSettingApi.reducer,
     [notificationSetupApi.reducerPath]: notificationSetupApi.reducer,
     userSlice: userReducer,
     authSlice: authReducer,
@@ -42,6 +44,7 @@ export const store = configureStore({
         userApi.middleware,
         priceFeedApi.middleware,
         priceAlertApi.middleware,
+        userSettingApi.middleware,
         notificationSetupApi.middleware
     ]),
 });

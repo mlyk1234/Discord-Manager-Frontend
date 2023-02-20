@@ -1,12 +1,13 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { BASE_URL } from "../..";
 import { useAppDispatch, useAppSelector } from "../../redux";
 import { injectableJWT } from "../../redux/api/axios-handler";
-import { setJWTAuth } from "../../redux/features/auth.slice";
+import { clearToken, setJWTAuth } from "../../redux/features/auth.slice";
 import { updateSessionStatus } from "../../redux/features/session.slice";
 
 export const getToken = async (access_token: string) => {
-    return await axios.get('http://localhost:3002/api/v1/auth/refresh-token', {headers: {
+    return await axios.get(`${BASE_URL}/api/v1/auth/refresh-token`, {headers: {
         Authorization: `Bearer ${access_token}`
     }});
 }
@@ -29,6 +30,8 @@ export const useRefreshToken = () => {
                 await injectableJWT(token);
                 localStorage.setItem("access_token", token);
             } catch (err) {
+                dispatch(clearToken());
+                localStorage.clear();
                 dispatch(updateSessionStatus('inactive'))
             }
         }
@@ -79,6 +82,8 @@ export const useOnPageRefresh = () => {
                 dispatch(updateSessionStatus('active'));
             } catch (e) {
                 console.log('[Error useOnPageRefresh]:', e);
+                localStorage.clear();
+                dispatch(clearToken());
                 dispatch(updateSessionStatus('inactive'));
             }
         }

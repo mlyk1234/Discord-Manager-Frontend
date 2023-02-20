@@ -1,5 +1,9 @@
+.responsive-cpw {
+  @media (max-width: 720px) {
+    @apply flex-col gap-2;
+  }
+}
 .refresh-icon {
-    
     img {
         cursor: pointer;
     }

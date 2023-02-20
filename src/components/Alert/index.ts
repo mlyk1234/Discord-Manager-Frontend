@@ -3,7 +3,8 @@ export interface IListAlert {
     channel: string,
     watch: string,
     condition: string,
-    price_target: string | number,
+    price_target: number,
+    trigger_once: boolean,
     currency?: string,
     enabled: boolean,
     createdDate: Date
