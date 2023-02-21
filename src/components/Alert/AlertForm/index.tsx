@@ -123,7 +123,6 @@ export const AlertForm = ({mode = 'DEFAULT', editAlertData}: {mode?: AlertFormMo
             modifyAlert({id: editAlertData?.id, ...payload})
         }
     };
-    console.log(form.values.trigger_once)
     return (
         <DFAGrid str={{primary: 'Price Alert', secondary: 'Get notified when a coin goes above or below a price target.'}}>
             <DFAModal opened={opened} setOpened={setOpened} 

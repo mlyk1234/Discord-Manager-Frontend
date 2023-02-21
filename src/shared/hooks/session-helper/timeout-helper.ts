@@ -38,7 +38,6 @@ export const useTimeout = () => {
         clearTimeout(idle);
         clearTimeout(toLogoutTime);
         if(session === 'active') {
-            console.log('aih')
             timeLeftSinceLoggedIn = expiresIn - new Date().getTime();
             if(milliseconds/2 > timeLeftSinceLoggedIn) {
                 getToken(access_token).then((res) => {

@@ -185,7 +185,7 @@ const IntegrationList = () => {
                 {integrations && integrations.length > 0 ?
                     <>
                     {integrations.map((item, index) => 
-                        <div onClick={() => onSelectMode(item.name)} className="cursor-pointer">
+                        <div key={index} onClick={() => onSelectMode(item.name)} className="cursor-pointer">
                             <IntegrationIconV2 key={index} icon={item.name} mode={item.status}></IntegrationIconV2>
                         </div>
                     )}

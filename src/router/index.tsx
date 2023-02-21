@@ -17,14 +17,6 @@ export default AppRoute;
 
 export const useModal = () => {
     const [opened, setOpened] = useState(false);
-    
-    useEffect(() => {
-        if(opened) {
-            console.log('aih', opened)
-        } else {
-            console.log('ohh', opened)
-        }
-    }, [opened])
 
     return {
         opened,

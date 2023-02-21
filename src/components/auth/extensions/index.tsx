@@ -1,9 +1,8 @@
 import { Container, Grid, Text } from "@mantine/core"
-import { signInWithPopup } from "firebase/auth";
-import { SyntheticEvent, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { socialIcon } from "../../../asset/common/social"
-import { auth, authProviders, providersType } from "./providers";
+import { providersType } from "./providers";
 import { useFirebase } from "./useFirebase";
 
 
@@ -29,7 +28,7 @@ export const ExternalAuth = ({setIsLoading, setErrorText}: {setIsLoading: Functi
         <Container p={0} className='w-full px-10 flex flex-col items-center gap-6'>
             <Text className="text-dfa-grey">Or continue with</Text>
             <Grid m={0} className="w-full justify-between">
-                {Object.keys(socialIcon).map((key: string, index) =>
+                {Object.keys(socialIcon).filter((auth) => auth !== 'Microsoft').map((key: string, index) =>
                     <Grid key={index} onClick={() => firebaseSignIn(key as providersType)} m={0}>
                         {socialIcon[key as providersType]}
                     </Grid>
