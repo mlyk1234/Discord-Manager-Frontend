@@ -2,8 +2,6 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { initUserNotificationSetup, INotificationSetup } from '../features/notification.slice';
 import { axiosBaseQuery } from './axios-handler';
 
-const BASE_URL = 'http://localhost:3002';
-
 export const notificationSetupApi = createApi({
     reducerPath: 'notificationSetupApi',
     baseQuery: axiosBaseQuery({

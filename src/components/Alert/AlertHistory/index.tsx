@@ -23,9 +23,10 @@ export const AlertHistory = () => {
                 const split = item.watch.split('-');
                 res.push({
                     id: index,
-                    watch: split[0],
+                    watch: item.watch,
                     condition: conditionMapper(item.condition),
                     price_target: item.price_target,
+                    trigger_once: item.trigger_once,
                     channel: item.channel,
                     enabled: item.enabled,
                     createdDate: item.createdDate

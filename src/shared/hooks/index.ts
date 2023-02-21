@@ -5,6 +5,7 @@ import { useOnPageLoad } from './global/useOnPageLoad';
 import { useOnPageRefresh, useRefreshToken } from './session-helper/refresh-token-helper';
 import { useLogoutTimer } from './session-helper/inactivity-helper';
 import { useAppSelector } from '../redux';
+import { useTimeout } from './session-helper/timeout-helper';
 interface IHookActions {
     inject: Function[]
 }
@@ -20,10 +21,10 @@ const CreateHooks = ({injector}: {injector: Function[]}) => {
 export const useGeneralHooks = () => {
     CreateHooks({
         injector: [
-            useRefreshToken,
+            // useRefreshToken,
             useOnPageLoad,
             useOnPageRefresh,
-            useLogoutTimer
+            // useLogoutTimer
         ]
     });
 }
@@ -31,6 +32,7 @@ export const useGeneralHooks = () => {
 export const useRequireAuthHooks = () => {
 
     // useInitNotification();
+    useTimeout();
     useInitUserDetails();
     useInitUserPriceAlerts();
     useInitNotification();

@@ -1,6 +1,5 @@
 import { axiosBaseQuery } from './axios-handler';
 import { createApi } from '@reduxjs/toolkit/query/react';
-const BASE_URL = 'http://localhost:3002';
 
 export const priceFeedApi = createApi({
     reducerPath: 'priceFeedApi',

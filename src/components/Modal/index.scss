@@ -1,0 +1,6 @@
+.responsive-modal-container {
+    @apply px-10 py-8;
+    @media (max-width: 720px) {
+        @apply px-4 py-4;
+    }
+}

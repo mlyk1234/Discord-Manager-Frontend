@@ -1,8 +1,10 @@
 import { Button, Center, Container, Modal, Text } from "@mantine/core"
-import { Dispatch, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ReactComponent as DFAIcon } from "../../asset/DFA/bell.icon.svg";
+import "./index.scss";
+
 type layout = 'variant_1' | 'variant_2';
+
 export const DFAModal = ({opened, setOpened, str, children, variant = 'variant_1'}: {opened: boolean, setOpened: Function, str?: IModalHeader, children: JSX.Element | JSX.Element[], variant?: layout}) => {
 
     const navigate = useNavigate();
@@ -16,14 +18,14 @@ export const DFAModal = ({opened, setOpened, str, children, variant = 'variant_1
             padding={0}
             size={450}
         >
-            <Container px={'40px'} py={'32px'}>
+            <Container className="responsive-modal-container">
                 <ModalContainer str={{...str}}>
                     <>{children}</>
                 </ModalContainer>
                 {variant === 'variant_1' &&
                     <>
                         <Button onClick={() => setOpened(false)} radius={'xl'} className='dfa-btn-gradient text-base w-full mt-8'>Dismissed</Button>
-                        <Text onClick={() => navigate('/alert')} className="cursor-pointer text-center mt-4 text-white text-sm font-normal">Manage My Alerts</Text>
+                        <Text onClick={() => { navigate('/alert'); setOpened(false); }} className="cursor-pointer text-center mt-4 text-white text-sm font-normal">Manage My Alerts</Text>
                     </>
                 }
                 {variant === 'variant_2' &&

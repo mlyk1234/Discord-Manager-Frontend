@@ -5,8 +5,6 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import { setUser } from '../features/user.slice';
 import { AxiosError } from 'axios';
 
-const BASE_URL = 'http://localhost:3002';
-
 export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: axiosBaseQuery({

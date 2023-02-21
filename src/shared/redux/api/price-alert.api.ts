@@ -17,7 +17,6 @@ export const priceAlertApi = createApi({
                     data: data,
                 }),
                 transformResponse: (result: { data: any[] }) => {
-                    console.log('price alert creation', result);
                     return result.data;
                 },
                 async onQueryStarted(args, { dispatch, queryFulfilled}) {
@@ -25,6 +24,23 @@ export const priceAlertApi = createApi({
                         const { data } = await queryFulfilled;
                     } catch (error) {
                         console.log('Error [createAlert]', error);
+                    }
+                }
+            }),
+            modifyAlert: build.mutation({
+                query: (data) => ({
+                    endpointurl: 'modify',
+                    method: 'post',
+                    data: data,
+                }),
+                transformResponse: (result: { data: any }) => {
+                    return result.data;
+                },
+                async onQueryStarted(args, { dispatch, queryFulfilled}) {
+                    try {
+                        const { data } = await queryFulfilled;
+                    } catch (error) {
+                        console.log('Error [modifyAlert]', error);
                     }
                 }
             }),
@@ -68,4 +84,4 @@ export const priceAlertApi = createApi({
     }
 });
 
-export const { useCreateAlertMutation, useDeleteAlertMutation, useGetAlertQuery, useLazyGetAlertQuery } = priceAlertApi;
+export const { useCreateAlertMutation, useModifyAlertMutation, useDeleteAlertMutation, useGetAlertQuery, useLazyGetAlertQuery } = priceAlertApi;

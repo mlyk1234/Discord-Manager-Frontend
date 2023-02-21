@@ -2,13 +2,15 @@ import { Container, Divider, Tabs } from "@mantine/core"
 import { useState } from "react"
 import { AccountSettings } from "../../components/Settings/AccountSettings"
 import { NotificationSetup } from "../../components/Settings/NotificationSetup"
-import { DFAGrid } from "../../components/shared/DFAGrid"
+import Preferences from "../../components/Settings/Preferences"
+import { DFAGrid } from "../../components/shared/DFAGrid/DFAGrid"
+import "./index.scss";
 
 export const Settings = () => {
 
     return (
         <DFAGrid str={{primary: 'Settings', secondary: 'Manage your account and preferences here.'}}>
-            <Container p={0} className="w-full">
+            <Container p={0} className="w-full flex-grow flex flex-col">
                 <Divider mb={32} className='border-dfa-grey'/>
                 <SettingTabs/>
             </Container>
@@ -30,16 +32,16 @@ const tabData: ITab[] = [{
     component: <NotificationSetup/>
 }, {
     label: 'Preferences',
-    component: <></>,
-    disabled: true
+    component: <Preferences/>,
+    disabled: false
 }]
 
 const SettingTabs = () => {
     const [tabs, setTabs] = useState<ITab[]>(tabData);
     return (
-        <Container p={0} className="flex flex-col items-center text-center gap-[18px]">
-            <Tabs className="w-full" defaultValue={'Account Settings'}>
-                <Tabs.List>
+        <Container p={0} className="flex flex-col items-center gap-[18px] flex-grow">
+            <Tabs className="w-full flex-grow justify-start" defaultValue={'Account Settings'}>
+                <Tabs.List className="tab-list-setting">
                     {tabs && tabs.length > 0 ?
                         tabs.map((item, index) => 
                             <Tabs.Tab key={index} value={item.label} disabled={item.disabled}>
@@ -54,7 +56,7 @@ const SettingTabs = () => {
                 </Tabs.List>
                 {tabs && tabs.length > 0 ?
                         tabs.map((item, index) => 
-                            <Tabs.Panel key={index} className="w-full" value={item.label}>{item.component}</Tabs.Panel>
+                            <Tabs.Panel key={index} className="w-full flex-grow" value={item.label}>{item.component}</Tabs.Panel>
                         )
                         :
                         null

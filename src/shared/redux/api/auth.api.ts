@@ -6,8 +6,6 @@ import { userApi } from './user.api';
 import { setJWTAuth } from '../features/auth.slice';
 import { updateSessionStatus } from '../features/session.slice';
 
-const BASE_URL = 'http://localhost:3002';
-
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: axiosBaseQuery({
@@ -39,7 +37,7 @@ export const authApi = createApi({
           try {
             const { data } = await queryFulfilled;
             await injectableJWT(data.data.access_token); // Accessible
-            localStorage.setItem('token', data.data.access_token);
+            localStorage.setItem('access_token', data.data.access_token);
             const milliseconds = data.data.expiresIn - new Date().getTime();
             console.log('get milis', data.data.expiresIn);
             dispatch(setJWTAuth({
@@ -61,6 +59,50 @@ export const authApi = createApi({
           endpointurl: 'logout',
           method: 'post',
         }),
+      }),
+      changePassword: build.mutation({
+        query: (data) => ({
+          endpointurl: 'change-password',
+          method: 'post',
+          data: data,
+        }),
+        async onQueryStarted(args, { dispatch, queryFulfilled }) {
+          try {
+            const { data } = await queryFulfilled;
+          } catch (error) {
+            console.log('Error [changePassword]')
+          }
+        }
+      }),
+      exchangeSocialToken: build.mutation
+      <string | any, 
+      {
+        token: string
+      }>({
+        query: (data) => ({
+          endpointurl: 'social-login/oauth',
+          method: 'post',
+          data: data,
+        }),
+        async onQueryStarted(args, { dispatch, queryFulfilled }) {
+          try {
+            const { data } = await queryFulfilled;
+            console.log('Success [exchangeSocialToken]', data);
+            await injectableJWT(data.data.access_token); // Accessible
+            localStorage.setItem('access_token', data.data.access_token);
+            const milliseconds = data.data.expiresIn - new Date().getTime();
+            dispatch(setJWTAuth({
+                access_token: data.data.access_token,
+                expiresIn: data.data.expiresIn,
+                milliseconds
+            }));
+            
+            dispatch(updateSessionStatus('active'));
+            dispatch(userApi.endpoints.getDetails.initiate(null));
+          } catch (error) {
+            console.log('Error [exchangeSocialToken]', error)
+          }
+        }
       }),
     };
   },
@@ -106,4 +148,4 @@ export const authApi = createApi({
   // }),
 });
 
-export const { useLoginUserMutation, useLogoutUserMutation } = authApi;
+export const { useLoginUserMutation, useChangePasswordMutation, useLogoutUserMutation, useExchangeSocialTokenMutation } = authApi;

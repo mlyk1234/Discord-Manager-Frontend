@@ -25,10 +25,10 @@ export const CurrentPriceWidget = () => {
 
     return (
         <>
-            <div className="inlined-wrapped text-dfa-grey text-base font-medium">
+            <div className="inlined-wrapped responsive-cpw text-dfa-grey text-base font-medium">
                 <LightningIcon className="mr-2"/>
-                <Text>The price of <span className="dfa-text-gradient">BTC</span> is currently</Text>&nbsp;
-                <Text className="dfa-text-gradient">{thousandSeperator(priceOf)} USD</Text>.
+                <Text>The price of <span className="dfa-text-gradient">BTC</span> is currently&nbsp;</Text>
+                <Text className="dfa-text-gradient">{thousandSeperator(priceOf)} USD.</Text>
                 <div className="refresh-icon">
                     <img onClick={() => refetchHandler()} style={isLoaded ? {animation: 'rotation 3s infinite linear', animationDuration: '0.5s', cursor: 'not-allowed'} : {animation: 'unset'}} src={require('../../../asset/common/refresh.icon.png')}/>
                 </div>

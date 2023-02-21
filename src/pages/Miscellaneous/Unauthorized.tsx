@@ -27,7 +27,7 @@ const LogOutTemplate = () => {
     return (
         <Container className="w-full h-full inlined-component-centered flex-col gap-3">
             <DFAIcon/>
-            <Text className="text-xl text-white font-semibold">Uh oh... You have been logged out.</Text>
+            <Text className="text-xl text-white font-semibold text-center">Uh oh... You have been logged out.</Text>
             <Button onClick={() => navigate('/')} radius={'xl'} className="dfa-btn-gradient">Back to Login</Button>
         </Container>
     )

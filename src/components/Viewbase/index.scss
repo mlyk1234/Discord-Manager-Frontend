@@ -1,8 +1,9 @@
 .dfa-view-base {
-    @apply pt-[122px] pb-[122px];
-
-    overflow-y: scroll;
-    /* ===== Scrollbar CSS ===== */
-  /* Firefox */
-
+  overflow-y: scroll;
+  @media (min-width: 768px) {
+    @apply pt-[122px] pb-[122px] flex flex-col;
+  }
+  @media (max-width: 768px) {
+      @apply px-4 pt-24 pb-28;
+  }
 }
