@@ -17,7 +17,7 @@ let initialTime = new Date();
 
 export const useRefreshToken = () => {
     let dispatch = useAppDispatch();
-    const access_token = localStorage.getItem('token');
+    const access_token = localStorage.getItem('access_token');
     const milliseconds = useAppSelector((state) => state.authSlice.milliseconds);
     // console.log('[useRefreshToken]: You have left', milliseconds)
     // console.log('[Refresh]', access_token);
@@ -64,7 +64,7 @@ export const useRefreshToken = () => {
 export const useOnPageRefresh = () => {
     // Refresh page should get new token => Active State
     let dispatch = useAppDispatch();
-    const access_token = localStorage.getItem('token');
+    const access_token = localStorage.getItem('access_token');
     async function onPageRefresh() {
         if (access_token) {
             try {

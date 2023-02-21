@@ -1,0 +1,6 @@
+.notification-status {
+    @apply flex justify-center items-center;
+    @media (max-width: 720px) {
+        @apply flex flex-col;
+    }
+}

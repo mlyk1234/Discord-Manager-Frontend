@@ -1,3 +1,4 @@
+import { BASE_URL } from './../../../shared/index';
 import axios from "axios";
 import { useAppSelector } from "../../../shared/redux"
 
@@ -20,7 +21,7 @@ export const saveUserNotificationSettings =
             discordWebhookURL,
             enableEmailNotifications
         })
-        await axios.post("http://localhost:3002/api/v1/notification/save-notification-settings",
+        await axios.post(`${BASE_URL}/api/v1/notification/save-notification-settings`,
             {
                 enableDiscordNotifications,
                 enableTelegramNotifications,

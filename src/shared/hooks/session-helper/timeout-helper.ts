@@ -22,14 +22,14 @@ export const useTimeout = () => {
     window.onmousedown = resetTime;
 
     // Prevent memory leaks
-    useEffect(() => {
-        if(session === 'active') {
-            window.addEventListener('scroll', resetTime, true);
-        }
-        // we need to detach the listener otherwise it will be reattach to different listener
-        // addEventListen => assign to the position of scroll is Unique value, thus different listener still intach
-        return () => { window.removeEventListener('scroll', resetTime, true); }
-    }, [session]);
+    // useEffect(() => {
+    //     if(session === 'active') {
+    //         window.addEventListener('scroll', resetTime, true);
+    //     }
+    //     // we need to detach the listener otherwise it will be reattach to different listener
+    //     // addEventListen => assign to the position of scroll is Unique value, thus different listener still intach
+    //     return () => { window.removeEventListener('scroll', resetTime, true); }
+    // }, [session]);
     // Prevent memory leaks
 
     const dispatch = useAppDispatch();
@@ -38,6 +38,7 @@ export const useTimeout = () => {
         clearTimeout(idle);
         clearTimeout(toLogoutTime);
         if(session === 'active') {
+            console.log('aih')
             timeLeftSinceLoggedIn = expiresIn - new Date().getTime();
             if(milliseconds/2 > timeLeftSinceLoggedIn) {
                 getToken(access_token).then((res) => {
@@ -47,11 +48,20 @@ export const useTimeout = () => {
                         expiresIn: res.data.data.expiresIn,
                         milliseconds: new_milliseconds
                     }))
+                    localStorage.setItem('access_token', res.data.data.access_token);
+                    dispatch(updateSessionStatus('active'));
+                }).catch((err) => {
+                    dispatch(logout());
+                    dispatch(clearToken());
+                    dispatch(updateSessionStatus('inactive'));
                 })
             }
             // start check
             shouldStart();
-        } else { 
+        } else {
+            dispatch(logout());
+            dispatch(clearToken());
+            dispatch(updateSessionStatus('inactive'));
             timeLeftSinceLoggedIn = 0;
         }
     }

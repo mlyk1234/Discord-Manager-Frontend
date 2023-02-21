@@ -4,7 +4,7 @@ import { authSlice } from './../features/auth.slice';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 import axios, { AxiosError, AxiosHeaders, AxiosRequestConfig } from 'axios';
 import { BASE_URL } from '../..';
-let access_token: string = localStorage.getItem('token') || '';
+let access_token: string = localStorage.getItem('access_token') || '';
 export const injectableJWT = async (_access_token: string) => {
     access_token = _access_token;
 }

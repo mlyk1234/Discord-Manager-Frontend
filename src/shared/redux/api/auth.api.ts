@@ -37,7 +37,7 @@ export const authApi = createApi({
           try {
             const { data } = await queryFulfilled;
             await injectableJWT(data.data.access_token); // Accessible
-            localStorage.setItem('token', data.data.access_token);
+            localStorage.setItem('access_token', data.data.access_token);
             const milliseconds = data.data.expiresIn - new Date().getTime();
             console.log('get milis', data.data.expiresIn);
             dispatch(setJWTAuth({
@@ -89,7 +89,7 @@ export const authApi = createApi({
             const { data } = await queryFulfilled;
             console.log('Success [exchangeSocialToken]', data);
             await injectableJWT(data.data.access_token); // Accessible
-            localStorage.setItem('token', data.data.access_token);
+            localStorage.setItem('access_token', data.data.access_token);
             const milliseconds = data.data.expiresIn - new Date().getTime();
             dispatch(setJWTAuth({
                 access_token: data.data.access_token,

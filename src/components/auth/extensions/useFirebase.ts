@@ -8,7 +8,8 @@ export const useFirebase = () => {
     const [isSuccess, setIsSuccess] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isError, setIsError] = useState<boolean>(false);
-    const [exchangeSocialToken, {isError: exchangeTokenError, isSuccess: exchangeTokenSuccess }] = useExchangeSocialTokenMutation();
+    const [error, setError] = useState<any>();
+    const [exchangeSocialToken, {error: errorData, isError: exchangeTokenError, isSuccess: exchangeTokenSuccess }] = useExchangeSocialTokenMutation();
 
     const firebaseSignIn = async (platform: providersType) => {
         setIsLoading(true);
@@ -34,6 +35,12 @@ export const useFirebase = () => {
     }
 
     useEffect(() => {
+        if(errorData) {
+            const err = errorData as FirebaseError | any;
+            setError(err.data.message)
+        }
+    }, [errorData])
+    useEffect(() => {
         if(exchangeTokenSuccess) {
             setIsSuccess(true);
         } else {
@@ -53,6 +60,7 @@ export const useFirebase = () => {
         isSuccess,
         isLoading,
         isError,
+        error,
         firebaseSignIn
     }
 }

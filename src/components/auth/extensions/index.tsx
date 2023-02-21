@@ -8,14 +8,14 @@ import { useFirebase } from "./useFirebase";
 
 
 
-export const ExternalAuth = ({setIsLoading}: {setIsLoading: Function}) => {
-    const { firebaseSignIn, isError, isLoading, isSuccess } = useFirebase();
+export const ExternalAuth = ({setIsLoading, setErrorText}: {setIsLoading: Function, setErrorText: Function}) => {
+    const { firebaseSignIn, isError, isLoading, isSuccess, error } = useFirebase();
     const navigate = useNavigate();
     useEffect(() => {
-        if(isSuccess) {
-            
+        if(error) {
+            setErrorText(error);
         }
-    }, [isSuccess])
+    }, [error])
     
     useEffect(() => {
         if(isLoading) {

@@ -44,7 +44,6 @@ export const Login = () => {
     useEffect(() => {
         if(isError && error) {
             const err = error as AxiosResponse;
-            console.log('hi error', error)
             setErrorText(err.data.message)
         }
     }, [error, isError]);
@@ -79,7 +78,7 @@ export const Login = () => {
                         <Text onClick={() => navigate('/register')} className="cursor-pointer font-medium text-transparent bg-clip-text bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)]">Sign up</Text></Text>
                         {errorText && <Text className="global-input-error text-center mt-2">{errorText}</Text>}
                     <div className="pt-6">
-                        <ExternalAuth setIsLoading={setIsLoading}/>
+                        <ExternalAuth setIsLoading={setIsLoading} setErrorText={setErrorText}/>
                     </div>
                 </Container>
             </Frame>

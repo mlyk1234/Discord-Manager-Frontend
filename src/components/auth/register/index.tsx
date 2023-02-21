@@ -26,7 +26,7 @@ export const Register = () => {
         initialValues: formData,
         validate: {
             emailAddress: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-            password: (value) => (PASSWORD_PATTERN.test(value) ? null : 'Password is not ideal'),
+            password: (value) => (PASSWORD_PATTERN.test(value) ? null : 'Password must be a combination of at least 1 uppercase, 1 lower case, 1 number and 1 special character with min length of 8'),
             confirm_password: (value, primary_value) => (value !== primary_value.password ? 'Password not matched!' : null),
         }
     })

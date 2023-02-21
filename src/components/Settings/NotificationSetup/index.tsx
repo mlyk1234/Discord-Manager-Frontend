@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../shared/redux";
 import { ReactComponent as VerifiedCheckIcon } from "../../../asset/common/verified-check.icon.svg";
 import { saveUserNotificationSettings } from "./notification.api";
 import { useGetNotificationSetupMutation } from "../../../shared/redux/api/notification-setup.api.";
+import "./index.scss";
 
 export const NotificationSetup = () => {
 
@@ -193,16 +194,16 @@ const IntegrationList = () => {
                 }
             </Container>
             <Container p={0} className="max-w-[400px] flex flex-col flex-grow items-center">
-                <Text className="text-dfa-grey mt-8">{integrations.find(item => item.name === currentSetup)?.desc}</Text>
+                <Text className="text-dfa-grey mt-8 text-center">{integrations.find(item => item.name === currentSetup)?.desc}</Text>
                 {integrations.find(item => item.name === currentSetup)?.webhook_url && 
                     <div className="flex flex-col justify-center">
                         <Input width={"100%"} defaultValue={discordWebhookUrl} onChange={(v: BaseSyntheticEvent) => onSetDiscordWebhookUrl(v.target.value)} className="mt-8 w-[336px] flex items-center justify-center" radius={'xl'} placeholder="Enter webhook url"/>
 
                         {errorDiscord &&
-                            <Text className="text-red-500 text-xs mt-1">Please enter valid <a target="_blank" href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks" className="underline cursor-pointer">discord webhook url.</a></Text>
+                            <Text className="text-red-500 text-xs mt-2 text-center">Please enter valid <a target="_blank" href="https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks" className="underline cursor-pointer">discord webhook url.</a></Text>
                         }
                         {discordStatus &&
-                            <Text className="text-green-500 text-xs mt-1">Bot Connected</Text>
+                            <Text className="text-green-500 text-xs mt-2 text-center">Bot Connected</Text>
                         }
                     </div>
                 }
@@ -246,7 +247,7 @@ const IntegrationList = () => {
                                 Save
                             </Button>
                         }
-                        <div className="inlined-component-centered items-end gap-4 flex-grow mt-5">
+                        <div className="notification-status items-end gap-4 flex-grow mt-5">
                             <Text className="text-dfa-grey">Status:</Text>
                             <Badge className="dfa-badge-configured">
                                 <div className="inlined-component bg-div w-full h-full gap-[10px]">
