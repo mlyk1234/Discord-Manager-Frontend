@@ -1,8 +1,0 @@
-.tab-list-setting {
-    @media (max-width: 768px) {
-        @apply flex flex-row gap-4 pb-0 mb-8;
-        width: 320px;
-        overflow-x: scroll;
-        flex-wrap: nowrap;
-    }
-}

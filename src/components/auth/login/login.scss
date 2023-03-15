@@ -1,0 +1,45 @@
+.auth-container {
+    display: flex;
+    width: 10%;
+    height: 100;
+    background-color: red;
+}
+
+.grids {
+    width: 600px;
+    height: 400px;
+
+    @media (min-width: 768px) {
+        @apply flex flex-row;
+    }
+    @media (max-width: 768px) {
+        @apply flex flex-col;
+    }
+    background: rgb(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+    .col {
+        @apply flex flex-col justify-center items-center;
+        transition: width 1s;
+        &.icon_placeholder {
+            width: 50%;
+            background: rgb(0, 0, 0, 0.2);
+            
+            svg {
+                width: 220px;
+            }
+            &.success {
+                width: 100%;
+            }
+        }
+
+        &.auth_placeholder {
+            width: 50%;
+            background: rgb(0, 0, 0, 0.5);
+            &.success {
+                display: none;
+            }
+        }
+
+    }
+}

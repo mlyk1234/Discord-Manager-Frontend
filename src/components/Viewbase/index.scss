@@ -1,7 +1,8 @@
 .dfa-view-base {
+  @apply h-[100vh] w-[100vw];
   overflow-y: scroll;
   @media (min-width: 768px) {
-    @apply pt-[122px] pb-[122px] flex flex-col;
+    @apply flex flex-col justify-center items-center;
   }
   @media (max-width: 768px) {
       @apply px-4 pt-24 pb-28;

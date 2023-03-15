@@ -1,0 +1,116 @@
+.mb-root {
+
+    .mb-list {
+        @apply flex flex-col;
+        background: rgb(0, 0, 0, 0.2);
+        
+        &.is-header {
+            @apply text-base font-semibold px-3;
+            border-radius: 12px 12px 0px 0px;
+        }
+
+        &.is-item {
+            padding: 0px 12px;
+            border-radius: 0px 0px 12px 12px;
+            width: 700px;
+            height: 300px;
+        }
+
+        overflow: scroll;
+        .mb-list-item {
+            @apply flex flex-row gap-2;
+            &.is-header {
+                @apply text-base font-semibold text-white flex justify-between pt-2;
+            }
+            .mb-cell {
+                overflow: scroll;
+                width: 30%;
+            }
+            .label {
+                @apply text-xs;
+            }
+            .value {
+                &.is-id {
+                    @apply text-xs rounded-3xl text-center;
+                    line-height: initial;
+                    padding: 2px 0px 1px 0px;
+                    background: rgb(0, 0, 0, 0.5);
+                }
+            }
+            .data-item {
+                border-top: 1px solid rgb(0, 0, 0, 0.2);
+                @apply flex flex-row w-full p-3 text-gray-400 text-base font-medium gap-2;
+                .grid-1 {
+                    @apply flex flex-col gap-3;
+                    word-break: break-all;
+                    width: 40%;
+                }
+                .grid-2 {
+                    @apply flex flex-col gap-3;
+                    word-break: break-all;
+                    width: -webkit-fill-available;
+                }
+                .grid-action {
+                    @apply flex flex-row justify-end items-center gap-2;
+                    .icon {
+                        @apply cursor-pointer;
+                        background: rgb(0, 0, 0, 0.2);
+                        padding: 8px;
+                        border-radius: 100%;
+                        svg {
+                            fill: #9CA3AF;
+                            path {
+                                fill: #9CA3AF;
+                                transition: 0.3s ease-in-out;
+                            }
+                            overflow: hidden;
+                            transition: 0.3s ease-in-out;
+                        }
+                        
+                        &:hover {
+                            svg {
+                                fill: #0089A9;
+                                path {
+                                    fill: #0089A9;
+                                }
+                            }
+                        }
+                    }
+                }
+                &:hover {
+                    @apply text-white;
+                    background-color: rgb(0, 0, 0, 0.2) !important;
+                }
+            }
+
+        }
+    }
+}
+
+.drawer-addbot {
+    &.mantine-Drawer-drawer {
+        width: 700px;
+        background-image: linear-gradient(89.98deg, #185a9cb9 0.03%, #008aa9b4 100%);
+    }
+}
+.addbot-root {
+    padding: 12px;
+    @apply flex flex-col justify-center items-center;
+    .addbot-form {
+        @apply flex flex-col gap-4;
+        width: 300px;
+        .input-wrapper {
+            @apply flex flex-col gap-1;
+        }
+    }
+    .addbot-result {
+        
+        @apply text-white flex flex-col;
+        margin-top: 32px;
+        margin-bottom: 32px;
+        width: 350px;
+        background: rgb(0, 0, 0, 0.2);
+        border-radius: 12px;
+        padding: 16px;
+    }
+}

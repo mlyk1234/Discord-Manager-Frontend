@@ -1,0 +1,22 @@
+.framer-regular {
+    position: relative;
+    @media (min-width: 768px) {
+        @apply rounded-xl border-solid;
+        width: 1100px;
+        height: 700px;
+        max-width: 100%;
+        overflow: scroll;
+        background-image: url("../../../asset/common/stacked-waves-haikei.svg");
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    @media (max-width: 768px) {
+        @apply p-[16px] border-solid;
+    }
+}
+
+.framer-small {
+    @apply w-[400px] pt-[32px] pr-[40px] pb-[32px] pl-[40px] border-solid;
+}

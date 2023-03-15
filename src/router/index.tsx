@@ -1,48 +1,37 @@
 import { Container, Modal } from "@mantine/core";
 import { createContext, useContext, useEffect, useState, useTransition } from "react";
-import { useAppSelector } from "../shared/redux";
+
 import { DeFiAPIRoute } from "./sourceMap";
+import { getJWT, useVerifyJWT } from "../shared/services/axios";
 
 const AppRoute = () => {
-    const session = useAppSelector((state) => state.sessionSlice.session_status);
+    const [session, setSession] = useState('inactive');
+    const { verifyJWT, isSuccessJWT, isErrorJWT } = useVerifyJWT();
+    // if(localStorage.getItem('access_token')) {
+    //     session = "active";
+    // }
+    useEffect(() => {
+        if(localStorage.getItem('access_token')) {
+            verifyJWT();
+        }
+    }, []);
+
+    useEffect(() => {
+        if(isErrorJWT) {
+            setSession('inactive');
+        }
+    }, [isErrorJWT])
+
+    useEffect(() => {
+        if(isSuccessJWT) {
+            setSession('active');
+        }
+    }, [isSuccessJWT])
+
     return (
-        // <CanActivateElement opened={true}>
-            <DeFiAPIRoute authenticated={session === 'active' ? true : false}/>
-        // </CanActivateElement>
+        <DeFiAPIRoute authenticated={session === 'active' ? true : false}/>
+
     )
 }
 
 export default AppRoute;
-
-
-export const useModal = () => {
-    const [opened, setOpened] = useState(false);
-
-    return {
-        opened,
-        setOpened
-    }
-}
-
-interface ICanActivate {
-    condition: boolean
-}
-const  CanActivate = createContext<ICanActivate>({condition: false});
-
-const CanActivateElement = ({ opened = false, children }: {opened?: boolean, children: JSX.Element | JSX.Element[]}) => {
-    const [shouldActivate, setShouldActivate] = useState(false);
-    const { condition } = useContext(CanActivate);
-    
-    console.log('ehh', condition)
-    return (
-        <>
-            <Modal
-                opened={shouldActivate}
-                onClose={() => setShouldActivate(!shouldActivate)}
-            >
-                <Container>DisplayCan</Container>
-            </Modal>
-            {children}
-        </>
-    )
-}

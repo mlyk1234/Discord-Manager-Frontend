@@ -1,0 +1,21 @@
+.bot-root {
+    @apply rounded-3xl max-w-fit;
+    background: rgb(0, 0, 0, 0.2);
+    padding: 12px;
+
+    .view-bot {
+        @apply flex flex-col items-center text-gray-400 gap-1;
+        span {
+            @apply font-bold;
+        }
+        div {
+            @apply rounded-3xl text-xs w-full text-center font-semibold;
+            padding: 4px;
+            background-color: rgb(0, 0, 0, 0.2);
+        }
+    }
+}
+
+.root-channel-type {
+    @apply flex flex-row;
+}

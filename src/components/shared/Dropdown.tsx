@@ -1,10 +1,6 @@
 import { Avatar, Menu } from "@mantine/core"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../shared/redux";
-import { clearToken } from "../../shared/redux/features/auth.slice";
-import { updateSessionStatus } from "../../shared/redux/features/session.slice";
-import { logout } from "../../shared/redux/features/user.slice";
 
 interface IMenuItems {
     name: string,
@@ -27,12 +23,8 @@ const initialItems: IMenuItems[] = [{
 export const DropDown = ({items}: {items?: string[]}) => {
     const [menuItems, setMenuItems] = useState<IMenuItems[]>(initialItems);
     const navigate = useNavigate();
-    const dispatch = useAppDispatch();
     const logOut = () => {
         localStorage.clear();
-        dispatch(logout());
-        dispatch(updateSessionStatus('inactive'));
-        dispatch(clearToken());
     }
 
     return (

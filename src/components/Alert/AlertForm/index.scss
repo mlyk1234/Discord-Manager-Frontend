@@ -1,9 +1,0 @@
-.responsive-input {
-    @apply flex items-center gap-4;
-    @media (max-width: 720px) {
-        @apply flex flex-row w-full justify-between;
-        .mantine-InputWrapper-root {
-            width: 50%;
-        }
-    }
-}

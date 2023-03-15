@@ -3,8 +3,8 @@ import Auth from "../components/auth";
 import NotFound404 from "../pages/404";
 import Dashboard from "../pages/Dashboard/";
 import { Unauthorized } from "../pages/Miscellaneous/Unauthorized";
-import { MyAlert } from "../pages/MyAlert";
-import { Settings } from "../pages/Settings";
+import Bot from "../components/Discord/Bot";
+import { ReplaceUrl } from "../pages/Miscellaneous/ReplaceUrl";
 
 interface ISourceMap {
     path: string,
@@ -27,22 +27,6 @@ export const _SourceMapper: ISourceMap[] = [
         access: 'public'
     },
     {
-        path: "/register",
-        name: "Register",
-        title: "Register",
-        requireAuth: false,
-        component: <Auth><Auth.Register/></Auth>,
-        access: 'public',
-    },
-    {
-        path: "/verify",
-        name: "Verify Email",
-        title: "Verify Email",
-        requireAuth: false,
-        component: <Auth><Auth.Verify/></Auth>,
-        access: 'public',
-    },
-    {
         path: "/dashboard",
         name: "Dashboard",
         title: "Dashboard",
@@ -51,11 +35,11 @@ export const _SourceMapper: ISourceMap[] = [
         access: 'protected'
     },
     {
-        path: "/alert",
-        name: "Alert",
+        path: "/bot",
+        name: "bot",
         title: "Alert",
         requireAuth: true,
-        component: <MyAlert/>,
+        component: <Bot/>,
         access: 'protected'
     },
     {
@@ -63,7 +47,7 @@ export const _SourceMapper: ISourceMap[] = [
         name: "Settings",
         title: "Settings",
         requireAuth: true,
-        component: <Settings/>,
+        component: <></>,
         access: 'protected'
     },
     {
@@ -72,6 +56,14 @@ export const _SourceMapper: ISourceMap[] = [
         title: "About",
         requireAuth: false,
         component: <>Nothing to see</>,
+        access: 'public'
+    },
+    {
+        path: "/replace-url",
+        name: "Replace Url",
+        title: "Replace Url",
+        requireAuth: false,
+        component: <ReplaceUrl/>,
         access: 'public'
     }
 ]

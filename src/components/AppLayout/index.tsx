@@ -1,4 +1,3 @@
-import { useAppSelector } from "../../shared/redux";
 import { Button, Footer, Header, Text } from '@mantine/core';
 import { ReactComponent as ReactLogo } from "../../asset/DFA/dfa.icon.svg";
 import { DropDown } from "../shared/Dropdown";
@@ -7,7 +6,7 @@ import "./index.scss";
 
 function AppHeader() {
     const navigate = useNavigate();
-    const session = useAppSelector((state) => state.sessionSlice.session_status)
+    let session = "inactive"
 
     if(session === 'active') {
         return (
@@ -28,7 +27,7 @@ function AppHeader() {
 
 function AppFooter() {
 
-    const session = useAppSelector((state) => state.sessionSlice.session_status)
+    let session = "inactive"
 
     if(session === 'active') {
         return (
