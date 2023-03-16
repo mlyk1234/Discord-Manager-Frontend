@@ -16,7 +16,7 @@ interface FormDataType {
 };
 
 export const Login = () => {
-    const navigate = useNavigate();
+    
     const { logMeIn, isSuccess, isError } = useLoginMutation();
     const [errorText, setErrorText] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -38,9 +38,6 @@ export const Login = () => {
                 password: form.values.password
             }
             await logMeIn(payload);
-            setTimeout(() => {
-                navigate('/dashboard');;
-            }, 1000)
         } catch (error) {
             // Skip
         }
@@ -72,6 +69,7 @@ export const Login = () => {
 }
 
 const useLoginMutation = () => {
+    const navigate = useNavigate();
     const [isSuccess, setIsSuccess] = useState(false);
     const [isError, setIsError] = useState(false);
     
@@ -83,7 +81,9 @@ const useLoginMutation = () => {
             });
             const { data } = result.data;
             localStorage.setItem('access_token', data.access_token);
+            window.dispatchEvent(new Event("storage"));
             setIsSuccess(true);
+
         } catch (error) {
             setIsError(true);
             throw error

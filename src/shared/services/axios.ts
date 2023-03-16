@@ -14,9 +14,10 @@ export const useVerifyJWT = () => {
   const [isSuccessJWT, setIsSuccessJWT] = useState(false);
   const verifyJWT = async () => {
     try {
-      await axios.get(`${backendUrl}/auth/verify-jwt`, {
+      const result = await axios.get(`${backendUrl}/auth/verify-jwt`, {
         ...getJWT()
       });
+      console.log('Verification:', result)
       setIsSuccessJWT(true);
     } catch (error) {
       setIsErrorJWT(true);
