@@ -7,7 +7,6 @@ export const ReplaceUrl = () => {
     const search = searchParams.get('url');
     useEffect(() => {
         if(search) {
-            console.log(search?.toString());
             localStorage.setItem('backendUrl', search);
         }
     }, [])

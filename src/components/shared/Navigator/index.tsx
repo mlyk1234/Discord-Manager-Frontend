@@ -4,20 +4,16 @@ import { useCallback, useEffect, useState } from "react";
 import { text } from "node:stream/consumers";
 
 const nav = [{
-    title: "Manage Bots",
+    title: "Dashboard",
     path: "dashboard",
-    active: false,
-}, {
-    title: "Manage Server",
-    path: "manage-server",
-    active: false,
-}, {
-    title: "Settings",
-    path: "settings",
     active: false,
 }, {
     title: "Logs",
     path: "logs",
+    active: false,
+}, {
+    title: "Settings (TBA)",
+    path: "settings",
     active: false,
 }]
 
@@ -35,7 +31,8 @@ export default function Navigator () {
             }
         })
         setNavLink(navLink);
-    }, [location.pathname]);
+        
+    }, [location.pathname, navLink]);
 
     const onSelect = (target: string) => {
         navLink.map(k => {
@@ -46,6 +43,7 @@ export default function Navigator () {
             }
         });
         setNavLink([...navLink]);
+        navigate(`/${target}`)
     }
 
     const scrollElement = document.getElementById("selected");

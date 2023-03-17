@@ -34,7 +34,7 @@ function AppFooter() {
             <Footer className="dfa-footer" height={60} p="md">
                 <div className="inlined-between">
                     <ReactLogo height={'32px'}/>
-                    <Text className="text-white">© 2023 DeFiAlert. All rights reserved. Powered by Securo</Text>
+                    <Text className="text-white">© 2023 Community Bot. All rights reserved. Powered by Unknown</Text>
                 </div>
             </Footer>
         )

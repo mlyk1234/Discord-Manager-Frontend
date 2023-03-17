@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Button, Drawer, Modal, Select, Text, TextInput } from "@mantine/core";
+import { Button, Drawer, Modal, Select, Table, Text, TextInput } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { ReactComponent as Hexagon } from "../../../asset/common/hexagon.svg";
 import { ReactComponent as Action } from "../../../asset/common/action.icon.svg";
@@ -8,6 +8,7 @@ import axios, { AxiosError } from "axios";
 import { useNavigate, createSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { isNotEmpty, useForm } from "@mantine/form";
+import dayjs from "dayjs"
 import backendUrl from "../../../shared/constant";
 
 const useGetBotsApi = () => {
@@ -40,7 +41,9 @@ const useGetBotsApi = () => {
 export default function ManageBot () {
     const [initialMBList, setInitialMBList] = useState<IBot[]>([]);
     const [opened, { open, close }] = useDisclosure(false);
+    const [openedLogs, { open: openLogs, close: closeLogs }] = useDisclosure(false);
     const [openedModal, { open: openModal, close: closeModal }] = useDisclosure(false);
+    const [targetId, setTargetId] = useState<number | undefined>(undefined);
     const { getBots, data, isSuccess } = useGetBotsApi();
     
     useEffect(() => {
@@ -108,7 +111,10 @@ export default function ManageBot () {
                                           state: { acc_id: k.acc_id, loginToken: k.loginToken }
                                         })
                                       }} className="icon"><Action/></div>
-                                      <div onClick={openModal} className="icon"><Hexagon/></div>
+                                      <div onClick={() => {
+                                        setTargetId(k.acc_id);
+                                        openLogs();
+                                      }} className="icon"><Hexagon/></div>
                                     </div>
                                 </div>
                             })()}
@@ -129,6 +135,15 @@ export default function ManageBot () {
                 >
                     <AddBot/>
                 </Drawer>
+                <Drawer
+                    id="addbot"
+                    opened={openedLogs} 
+                    onClose={closeLogs}
+                    position="right"
+                    className="drawer-addbot"
+                >
+                    <ViewLogs by_id={targetId}/>
+                </Drawer>
                 <Modal
                   size={"55rem"}
                   opened={openedModal}
@@ -138,6 +153,7 @@ export default function ManageBot () {
                   <div>Test</div>
                 </Modal>
             </div>
+            <div onClick={() => openLogs()} className="absolute bottom-0 text-white font-bold cursor-pointer rounded-3xl px-2" style={{background: 'rgb(0, 0, 0, 0.2)'}}>View Logs</div>
         </>
     )
 }
@@ -148,6 +164,69 @@ const initialBotState: BaseBot = {
   emailAddress: '', 
   phoneNumber: '' 
 };
+
+interface TableData {
+  username: string,
+  actionType: string,
+  botAction: any,
+  replyTo: any | null,
+  timeStamp: string
+}
+const ViewLogs = ({by_id}: {by_id?: number | undefined}) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [tableData, setTableData] = useState<TableData[]>([]);
+  useEffect(() => {
+    getLogs()
+  }, [])
+
+  const getLogs = async () => {
+    axios.get(`${backendUrl}/discord/logs/${by_id ? by_id?.toString() : ''}`).then((res) => {
+      const { data } = res.data;
+      if(data && data.length > 0) {
+        let arrObj: TableData[] = [];
+        data.forEach((item: any) => {
+          arrObj.push({
+            username: item.acc_data.username,
+            actionType: item.text ? 'Text' : 'React',
+            botAction: item.text || item.react,
+            replyTo: item.reply_to ? item.reply_to : null,
+            timeStamp: dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm A')
+          })
+        });
+        setTableData(arrObj)
+      }
+    })
+  }
+
+  return (
+    <div className="flex flex-col overflow-y-auto h-[600px]">
+      <Table>
+        <thead>
+          <tr>
+            <th>Bot Username</th>
+            <th>Action Type</th>
+            <th>Bot Action</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData && tableData.length > 0 &&
+            <>
+              {tableData.map(i => 
+                <tr key={i.username}>
+                  <td>{i.username}</td>
+                  <td>{i.actionType}</td>
+                  <td>{i.botAction} {i.replyTo ? <div className="text-green-500">Reply to - {i.replyTo }</div>: null}</td>
+                  <td>{i.timeStamp}</td>
+                </tr>
+              )}
+            </>
+          }
+        </tbody>
+      </Table>
+    </div>
+  )
+}
 
 const AddBot = () => {
     const form = useForm({

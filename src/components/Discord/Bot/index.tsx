@@ -238,6 +238,7 @@ export default function Bot() {
 
     const [isReply, setIsReply] = useState<string>("OFF");
     const [messasgeId, setMessageId] = useState<string | null>(null);
+    const [reference, setReference] = useState<string | null>(null);
     const radioReplyHandler = async (value: string) => {
         if(value === "ON") {
             setIsReply(value)
@@ -269,7 +270,8 @@ export default function Bot() {
                     payload = {
                         ...payload,
                         is_reply: true,
-                        message_id: messasgeId
+                        message_id: messasgeId,
+                        reply_to: reference,
                     }
                 }
                 if(triggerAction === "SPECIFIC") {
@@ -286,6 +288,7 @@ export default function Bot() {
                     guild_id: defaultSelectServer,
                     channel_id: channelId,
                     message_id: messasgeId,
+                    reply_to: reference,
                     react: inputReact
                 }
                 await sendReactAPI(payload)
@@ -393,7 +396,13 @@ export default function Bot() {
                                             <div>Reply to:</div>
                                             <Select
                                                 dropdownPosition="bottom"
-                                                onChange={(v) => setMessageId(v)}
+                                                onChange={(v) => {
+                                                    setMessageId(v);
+                                                    if(replies && v) {
+                                                        const find = replies.find(i => i.value === v);
+                                                        setReference(find.label);
+                                                    }
+                                                }}
                                                 data={replies && replies.length > 0 ? replies : []}
                                             />
                                         </>
@@ -411,14 +420,19 @@ export default function Bot() {
                                         data={["💻", "👨‍🎓", "💰", "📈", "⚡", "🚀", "🔥", "👏", "❤️‍🔥", "💯", "🎉", "👀", "🤩", "👍", "📌"]}
                                         dropdownPosition='bottom'
                                     />
-                                    <div>This will react to a latest text</div>
                                     <div className="font-bold text-white">Advance</div>
                                     {!isLoadingFetchReplies &&
                                         <>
                                             <div>React to:</div>
                                             <Select
                                                 dropdownPosition="bottom"
-                                                onChange={(v) => setMessageId(v)}
+                                                onChange={(v) => {
+                                                    setMessageId(v);
+                                                    if(replies && v) {
+                                                        const find = replies.find(i => i.value === v);
+                                                        setReference(find.label);
+                                                    }
+                                                }}
                                                 data={replies && replies.length > 0 ? replies : []}
                                             />
                                         </>
@@ -467,6 +481,7 @@ interface IBasePayload {
     guild_id: string | null,
     loginToken: string,
     message_id?: string | null,
+    reply_to?: string | null,
 }
 interface ISendText extends IBasePayload {
     text: string,
